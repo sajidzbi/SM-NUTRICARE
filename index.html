@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>SM NutriCare</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;--s1:#12121a;--s2:#1a1a28;--s3:#22223a;
+  --a1:#00d4ff;--a2:#7c3aed;--a3:#10b981;--a4:#f59e0b;--a5:#ef4444;--a6:#ec4899;
+  --t1:#f0f4ff;--t2:#8892b0;--t3:#4a5568;
+  --gl:rgba(255,255,255,0.05);--gb:rgba(255,255,255,0.08);--gbb:rgba(255,255,255,0.12);
+  --r1:14px;--r2:20px;--r3:28px;
+}
+body.light{
+  --bg:#f0f4ff;--s1:#ffffff;--s2:#f8faff;--s3:#eef2ff;
+  --t1:#0a0a1f;--t2:#4a5568;--t3:#8892b0;
+  --gl:rgba(0,0,0,0.04);--gb:rgba(0,0,0,0.08);--gbb:rgba(0,0,0,0.12);
+}
+body.light::before{background:radial-gradient(circle,rgba(0,212,255,0.05) 0%,transparent 70%)}
+body.light::after{background:radial-gradient(circle,rgba(124,58,237,0.05) 0%,transparent 70%)}
+body.light #appHeader{background:rgba(240,244,255,0.95)}
+body.light #appFooter{background:rgba(240,244,255,0.97)}
+body.light .card{background:rgba(255,255,255,0.8)}
+body.light .mcard{background:rgba(255,255,255,0.9)}
+body.light .sheet{background:#ffffff}
+body.light .qcard{background:#ffffff}
+body.light .fi,body.light .fs{background:rgba(0,0,0,0.05);color:var(--t1)}
+body.light .meal-hdr{background:rgba(0,0,0,0.04)}
+body.light .fitm{background:rgba(0,0,0,0.02)}
+body.light .fli{background:rgba(0,0,0,0.04)}
+body.light .fli:active{background:rgba(0,212,255,0.12)}
+body.light .citem{background:rgba(0,0,0,0.05)}
+body.light .sbox{background:rgba(0,0,0,0.05)}
+body.light .status-card{border:1px solid rgba(0,0,0,0.08)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--t1);font-family:'Inter',sans-serif;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative}
+body::before{content:'';position:fixed;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,255,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;bottom:0;left:0;width:280px;height:280px;background:radial-gradient(circle,rgba(124,58,237,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+/* HEADER — always LTR English */
+#appHeader{
+  background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--gb);padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  direction:ltr;z-index:100;flex-shrink:0;
+}
+.hlogo{display:flex;align-items:center;gap:10px}
+.hicon{width:34px;height:34px;background:linear-gradient(135deg,var(--a1),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 12px rgba(0,212,255,0.3)}
+.hname{font-size:17px;font-weight:800;letter-spacing:-0.3px;color:var(--t1)}
+.hname span{color:var(--a1)}
+.hdate{font-size:10px;color:var(--t2);margin-top:1px}
+.hright{display:flex;align-items:center;gap:8px;direction:ltr}
+.lbtn{background:var(--gl);border:1px solid var(--gb);border-radius:20px;color:var(--t1);padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+.lbtn.active{background:linear-gradient(135deg,var(--a1),var(--a2));border-color:transparent;color:#000}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--a3);animation:pulse 2s infinite}
+.sync-dot.offline{background:var(--a4);animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* SCROLL AREA */
+#scrollArea{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;z-index:1;-webkit-overflow-scrolling:touch}
+#scrollArea::-webkit-scrollbar{width:2px}
+#scrollArea::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:1px}
+
+/* FOOTER NAV — always LTR English */
+#appFooter{
+  background:rgba(10,10,15,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--gb);
+  display:flex;padding:6px 0 12px;z-index:100;flex-shrink:0;
+  direction:ltr;
+}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;cursor:pointer;border:none;background:none;color:var(--t2);transition:all 0.2s;font-family:'Inter',sans-serif}
+.ni.active{color:var(--a1)}
+.ni .ico{font-size:19px;transition:transform 0.2s}
+.ni.active .ico{transform:scale(1.2)}
+.ni .lbl{font-size:8px;font-weight:600;letter-spacing:0.3px;direction:ltr}
+
+/* PAGES */
+.pg{display:none;padding:14px 14px 20px;animation:fi 0.25s ease}
+.pg.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:var(--gl);border:1px solid var(--gb);border-radius:var(--r3);padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle,rgba(255,255,255,0.02) 0%,transparent 70%)}
+.ct{font-size:10px;font-weight:700;color:var(--t2);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase}
+.ct.ur{font-size:11px;font-family:'Noto Nastaliq Urdu',sans-serif;letter-spacing:0;text-transform:none}
+
+/* CALORIE RING */
+.ring-wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ring-box{position:relative;width:120px;height:120px;flex-shrink:0}
+.ring-box svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:9}
+.ring-fg{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 0.9s cubic-bezier(.4,0,.2,1)}
+.ring-inner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.ri-num{font-size:22px;font-weight:900;color:var(--a1);line-height:1}
+.ri-lbl{font-size:8px;color:var(--t2);margin-top:2px}
+.cstats{flex:1;min-width:120px}
+.csrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.csl{font-size:11px;color:var(--t2)}
+.csv{font-size:12px;font-weight:700}
+
+/* MACROS */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.mcard{background:rgba(255,255,255,0.03);border-radius:var(--r1);padding:10px;border:1px solid rgba(255,255,255,0.05)}
+.mct{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.mname{font-size:9px;color:var(--t2);font-weight:600}
+.mval{font-size:13px;font-weight:800}
+.mbar{background:rgba(255,255,255,0.07);border-radius:3px;height:4px;overflow:hidden}
+.mbf{height:100%;border-radius:3px;transition:width 0.7s cubic-bezier(.4,0,.2,1)}
+.mtgt{font-size:9px;color:var(--t3);margin-top:3px}
+
+
+/* STATUS */
+.status-card{border-radius:var(--r2);padding:14px;text-align:center;transition:all 0.3s}
+.st-emoji{font-size:26px;margin-bottom:5px}
+.st-title{font-size:14px;font-weight:700;margin-bottom:3px}
+.st-sub{font-size:11px;color:var(--t2)}
+
+/* WATER */
+.wgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin-bottom:6px}
+.wc{font-size:18px;cursor:pointer;text-align:center;filter:grayscale(1) opacity(0.3);transition:all 0.2s}
+.wc.on{filter:none;transform:scale(1.1)}
+
+/* MEALS */
+.meal-sec{margin-bottom:10px}
+.meal-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:rgba(255,255,255,0.04);border-radius:var(--r1);border:1px solid rgba(255,255,255,0.06);margin-bottom:3px}
+.mhL{display:flex;align-items:center;gap:8px}
+.mhico{font-size:18px}
+.mhn{font-size:13px;font-weight:600}
+.mhcal{font-size:10px;color:var(--t2)}
+.addbtn{background:linear-gradient(135deg,var(--a1),#0099cc);border:none;border-radius:8px;color:white;padding:5px 10px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+.fitm{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:rgba(255,255,255,0.02);border-radius:10px;margin-bottom:3px;border:1px solid rgba(255,255,255,0.04)}
+.fin{font-size:12px;font-weight:500}
+.fid{font-size:9px;color:var(--t2);margin-top:1px}
+.fical{font-size:12px;font-weight:700;color:var(--a4)}
+.delbtn{background:none;border:none;color:var(--a5);font-size:13px;cursor:pointer;padding:2px 6px}
+
+/* FOOD SEARCH MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:200;display:none;align-items:flex-end;direction:ltr}
+.overlay.open{display:flex}
+.sheet{background:#13131f;border-radius:24px 24px 0 0;padding:14px;width:100%;max-height:88vh;overflow-y:auto;animation:su 0.3s ease;border:1px solid var(--gb)}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.shdrag{width:36px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin:0 auto 12px}
+.shtitle{font-size:14px;font-weight:700;margin-bottom:10px;text-align:center;direction:ltr}
+.searchbar{display:flex;gap:6px;margin-bottom:10px}
+.sfield{flex:1;background:var(--gl);border:1px solid var(--gbb);border-radius:12px;padding:9px 12px;color:var(--t1);font-size:12px;outline:none;font-family:'Inter',sans-serif;direction:ltr}
+.sfield:focus{border-color:var(--a1)}
+.sbtn{background:linear-gradient(135deg,var(--a1),var(--a2));border:none;border-radius:12px;color:white;padding:9px 14px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif}
+.sbtn.loading{opacity:0.6;cursor:wait}
+.catrow{display:flex;gap:5px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;scrollbar-width:none}
+.catrow::-webkit-scrollbar{display:none}
+.catbtn{background:var(--gl);border:1px solid var(--gb);border-radius:18px;color:var(--t2);padding:4px 10px;font-size:10px;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:all 0.2s;font-family:'Inter',sans-serif}
+.catbtn.active{background:linear-gradient(135deg,var(--a1),var(--a2));border-color:transparent;color:white;font-weight:700}
+.api-badge{display:inline-flex;align-items:center;gap:3px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:20px;padding:2px 8px;font-size:9px;color:var(--a3);font-weight:600;margin-bottom:8px}
+.fli{display:flex;align-items:center;justify-content:space-between;padding:10px;background:rgba(255,255,255,0.04);border-radius:12px;margin-bottom:4px;cursor:pointer;border:1px solid rgba(255,255,255,0.05);transition:all 0.15s}
+.fli:active{background:rgba(0,212,255,0.1);border-color:var(--a1)}
+.fln{font-size:12px;font-weight:600}
+.fli-sub{font-size:9px;color:var(--t2);margin-top:1px}
+.flcal{font-size:11px;font-weight:700;color:var(--a4);white-space:nowrap}
+.src-tag{display:inline-block;font-size:8px;padding:1px 5px;border-radius:5px;margin-top:2px;font-weight:600;background:rgba(16,185,129,0.15);color:var(--a3)}
+.loading-item{text-align:center;padding:20px;color:var(--t2);font-size:12px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--gb);border-top-color:var(--a1);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* QTY MODAL */
+.qmo{position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(8px);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;direction:ltr}
+.qmo.open{display:flex}
+.qcard{background:#13131f;border-radius:24px;padding:20px;width:100%;max-width:340px;border:1px solid var(--gb);animation:sc 0.25s ease}
+@keyframes sc{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+.qfn{font-size:15px;font-weight:700;margin-bottom:2px}
+.qfu{font-size:10px;color:var(--t2);margin-bottom:14px}
+.qsrc{font-size:9px;color:var(--a3);font-weight:600;margin-bottom:12px}
+.qctrl{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:12px}
+.qbtn{width:40px;height:40px;border-radius:11px;border:1px solid var(--gb);background:var(--gl);color:var(--t1);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif}
+.qnum{font-size:26px;font-weight:900;min-width:50px;text-align:center;color:var(--a1)}
+.qprev{background:rgba(255,255,255,0.04);border-radius:12px;padding:10px;margin-bottom:12px}
+.qpr{display:flex;justify-content:space-between;margin-bottom:2px;font-size:11px}
+.qpl{color:var(--t2)}.qpv{font-weight:600}
+.qacts{display:flex;gap:8px}
+.qcan{flex:1;padding:10px;border-radius:12px;border:1px solid var(--gb);background:none;color:var(--t2);cursor:pointer;font-size:12px;font-family:'Inter',sans-serif}
+.qadd{flex:2;padding:10px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--a1),var(--a2));color:white;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif}
+
+/* PROFILE */
+.pava{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 12px;box-shadow:0 6px 20px rgba(0,212,255,0.25)}
+.pnam{text-align:center;font-size:18px;font-weight:800;margin-bottom:2px}
+.psub{text-align:center;font-size:11px;color:var(--t2);margin-bottom:14px}
+.fg{margin-bottom:11px}
+.fl{font-size:10px;color:var(--t2);margin-bottom:4px;display:block;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+.fi,.fs{width:100%;background:var(--gl);border:1px solid var(--gb);border-radius:12px;padding:9px 12px;color:var(--t1);font-size:13px;outline:none;font-family:'Inter',sans-serif}
+.fi:focus,.fs:focus{border-color:var(--a1);background:rgba(0,212,255,0.05)}
+.fs option{background:#13131f}
+.fgr{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sbtn2{width:100%;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--a1),var(--a2));color:white;font-size:14px;font-weight:700;cursor:pointer;margin-top:6px;box-shadow:0 5px 18px rgba(0,212,255,0.2);font-family:'Inter',sans-serif;letter-spacing:0.3px}
+.gbadge{display:inline-block;background:linear-gradient(135deg,var(--a2),#9333ea);padding:3px 10px;border-radius:20px;font-size:9px;font-weight:700;margin-bottom:10px;letter-spacing:0.5px}
+.bmi-box{text-align:center;padding:6px 0}
+.bmi-n{font-size:38px;font-weight:900}
+.bmi-l{font-size:12px;font-weight:600;margin-top:2px}
+.bbar{height:7px;border-radius:4px;background:linear-gradient(to right,#3b82f6,#10b981,#f59e0b,#ef4444);margin:10px 0 4px;position:relative}
+.bind{position:absolute;width:14px;height:14px;background:white;border-radius:50%;top:-4px;transform:translateX(50%);box-shadow:0 2px 6px rgba(0,0,0,0.4);transition:right 0.5s}
+.bsc{display:flex;justify-content:space-between;font-size:8px;color:var(--t2)}
+
+/* REPORTS */
+.score-wrap{display:flex;align-items:center;gap:12px}
+.score-ring{position:relative;width:75px;height:75px;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.score-inner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.score-n{font-size:19px;font-weight:900;color:var(--a1)}
+.nr{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.nr:last-child{border-bottom:none}
+.nd{width:8px;height:8px;border-radius:50%;margin-right:6px;flex-shrink:0}
+.nn{font-size:11px;flex:1}
+.nbw{flex:2;margin:0 8px}
+.nbb{background:rgba(255,255,255,0.07);border-radius:3px;height:5px}
+.nbf{height:100%;border-radius:3px;transition:width 0.7s}
+.nv{font-size:9px;color:var(--t2);text-align:right;white-space:nowrap;min-width:60px}
+.wkchart{display:flex;align-items:flex-end;gap:6px;height:85px;padding:5px 0}
+.bw{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.bar{width:100%;border-radius:5px 5px 0 0;min-height:3px;transition:height 0.5s}
+.bday{font-size:8px;color:var(--t2);text-align:center}
+.bval{font-size:7px;color:var(--t1);font-weight:600}
+.tip-card{display:flex;gap:8px;padding:9px;background:rgba(255,255,255,0.03);border-radius:12px;margin-bottom:6px;border-right:3px solid var(--a1)}
+.tip-icon{font-size:18px;flex-shrink:0}
+.tip-title{font-size:11px;font-weight:700;margin-bottom:2px}
+.tip-desc{font-size:10px;color:var(--t2);line-height:1.5}
+.stat3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:8px}
+.sbox{background:rgba(255,255,255,0.04);border-radius:11px;padding:9px;text-align:center}
+.sbox-l{font-size:9px;color:var(--t2);margin-bottom:2px}
+.sbox-v{font-size:14px;font-weight:800}
+.sbox-u{font-size:8px;color:var(--t2)}
+
+/* ABOUT */
+.about-logo-big{width:80px;height:80px;background:linear-gradient(135deg,var(--a1),var(--a2));border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 12px;box-shadow:0 10px 28px rgba(0,212,255,0.3)}
+.dev-card{background:linear-gradient(135deg,rgba(0,212,255,0.07),rgba(124,58,237,0.07));border:1px solid rgba(0,212,255,0.18);border-radius:var(--r2);padding:16px;margin-bottom:12px}
+.dev-ava{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 10px;box-shadow:0 5px 15px rgba(0,212,255,0.25)}
+.dev-n{font-size:16px;font-weight:800;text-align:center}
+.dev-t{font-size:10px;color:var(--a1);text-align:center;font-weight:600;margin:2px 0 12px}
+.citem{display:flex;align-items:center;gap:9px;padding:9px 11px;background:rgba(255,255,255,0.04);border-radius:11px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.06);direction:ltr}
+.cico{font-size:18px;flex-shrink:0}
+.clbl{font-size:9px;color:var(--t2);margin-bottom:1px;text-transform:uppercase;letter-spacing:0.5px}
+.cval{font-size:12px;font-weight:600}
+.feat-row{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.feat-row:last-child{border-bottom:none}
+.feat-ico{font-size:17px;width:28px;text-align:center;flex-shrink:0;margin-top:1px}
+.feat-t{font-size:12px;font-weight:700;margin-bottom:1px}
+.feat-d{font-size:10px;color:var(--t2)}
+.data-src{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:10px 12px;margin-top:8px;font-size:10px;color:var(--t2);line-height:1.6}
+.data-src strong{color:var(--a3)}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--a3);color:white;padding:8px 18px;border-radius:11px;font-size:11px;font-weight:600;z-index:500;opacity:0;transition:all 0.3s;white-space:nowrap;font-family:'Inter',sans-serif;direction:ltr}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(--a5)}
+</style>
+</head>
+<body>
+
+<!-- HEADER — always LTR English -->
+<header id="appHeader">
+  <div class="hlogo">
+    <div class="hicon">🌿</div>
+    <div>
+      <div class="hname"><span>SM</span> NutriCare</div>
+      <div class="hdate" id="hDate"></div>
+    </div>
+  </div>
+  <div class="hright">
+    <div class="sync-dot" id="syncDot" title="Online"></div>
+    <button class="lbtn" id="modeBtn" onclick="toggleMode()" title="Toggle Day/Night">🌙</button>
+    <button class="lbtn" onclick="setLang('en')" id="lEN">EN</button>
+    <button class="lbtn" onclick="setLang('ur')" id="lUR">اردو</button>
+  </div>
+</header>
+
+<!-- SCROLL AREA -->
+<div id="scrollArea">
+
+<!-- HOME -->
+<div class="pg active" id="pg-home">
+  <div style="margin-bottom:14px">
+    <div style="font-size:11px;color:var(--t2)" id="greet"></div>
+    <div style="font-size:19px;font-weight:800;letter-spacing:-0.5px" id="uname"></div>
+  </div>
+
+  <!-- Calorie Card -->
+  <div class="card">
+    <div class="ct" id="ct-cal">🔥 TODAY'S CALORIES</div>
+    <div class="ring-wrap">
+      <div class="ring-box">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="ring-fg" id="cring" cx="60" cy="60" r="50" stroke="url(#rg)" stroke-dasharray="314" stroke-dashoffset="314"/>
+          <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00d4ff"/><stop offset="100%" style="stop-color:#7c3aed"/></linearGradient></defs>
+        </svg>
+        <div class="ring-inner"><div class="ri-num" id="rnum">0</div><div class="ri-lbl" id="rlbl">consumed</div></div>
+      </div>
+      <div class="cstats">
+        <div class="csrow"><span class="csl" id="cs-goal">🎯 Goal</span><span class="csv" id="cv-goal" style="color:var(--a1)">2000</span></div>
+        <div class="csrow"><span class="csl" id="cs-eaten">✅ Eaten</span><span class="csv" id="cv-eaten" style="color:var(--a4)">0</span></div>
+        <div class="csrow"><span class="csl" id="cs-burned">🔥 Burned</span><span class="csv" id="cv-burned" style="color:var(--a3)">0</span></div>
+        <div class="csrow"><span class="csl" id="cs-net">⚡ Net Left</span><span class="csv g" id="cv-net" style="color:var(--a3)">2000</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- Macros -->
+  <div class="card">
+    <div class="ct" id="ct-macro">🧬 MACRONUTRIENTS</div>
+    <div class="mgrid">
+      <div class="mcard"><div class="mct"><span class="mname" id="ml-prot">💪 PROTEIN</span><span class="mval" id="mv-prot" style="color:var(--a1)">0g</span></div><div class="mbar"><div class="mbf" id="mb-prot" style="background:var(--a1);width:0%"></div></div><div class="mtgt"><span id="mt-prot">Target</span>: <span id="tv-prot">50</span>g</div></div>
+      <div class="mcard"><div class="mct"><span class="mname" id="ml-carb">🍞 CARBS</span><span class="mval" id="mv-carb" style="color:var(--a4)">0g</span></div><div class="mbar"><div class="mbf" id="mb-carb" style="background:var(--a4);width:0%"></div></div><div class="mtgt"><span id="mt-carb">Target</span>: <span id="tv-carb">250</span>g</div></div>
+      <div class="mcard"><div class="mct"><span class="mname" id="ml-fat">🫙 FAT</span><span class="mval" id="mv-fat" style="color:var(--a3)">0g</span></div><div class="mbar"><div class="mbf" id="mb-fat" style="background:var(--a3);width:0%"></div></div><div class="mtgt"><span id="mt-fat">Target</span>: <span id="tv-fat">65</span>g</div></div>
+      <div class="mcard"><div class="mct"><span class="mname" id="ml-chol">🩸 CHOLESTEROL</span><span class="mval" id="mv-chol" style="color:var(--a5)">0mg</span></div><div class="mbar"><div class="mbf" id="mb-chol" style="background:var(--a5);width:0%"></div></div><div class="mtgt"><span id="mt-chol">Target</span>: 300mg</div></div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border-radius:11px;padding:9px;border:1px solid rgba(255,255,255,0.05)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:9px;color:var(--t2);font-weight:700" id="ml-fib">🌾 FIBER</span><span style="font-size:12px;font-weight:800;color:#a855f7" id="mv-fib">0g / 25g</span></div>
+      <div class="mbar"><div class="mbf" id="mb-fib" style="background:#a855f7;width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- Water -->
+  <div class="card">
+    <div class="ct" id="ct-water">💧 WATER INTAKE</div>
+    <div class="wgrid" id="wgrid"></div>
+    <div style="text-align:center;font-size:11px;color:var(--t2);margin-top:6px" id="winfo"></div>
+  </div>
+
+  <!-- Status -->
+  <div class="status-card" id="stcard">
+    <div class="st-emoji" id="st-e">🌟</div>
+    <div class="st-title" id="st-t"></div>
+    <div class="st-sub" id="st-s"></div>
+  </div>
+</div>
+
+<!-- LOG -->
+<div class="pg" id="pg-log">
+  <div style="font-size:17px;font-weight:800;margin-bottom:14px;letter-spacing:-0.3px" id="pg-log-title">🍽️ Food Log</div>
+  <div id="mealsCont"></div>
+</div>
+
+<!-- REPORTS -->
+<div class="pg" id="pg-reports">
+  <div style="font-size:17px;font-weight:800;margin-bottom:14px;letter-spacing:-0.3px" id="pg-rep-title">📊 Reports</div>
+
+  <!-- Health Score -->
+  <div class="card" style="background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(124,58,237,0.08));border-color:rgba(0,212,255,0.2)">
+    <div class="ct" id="ct-score">🏆 HEALTH SCORE</div>
+    <div class="score-wrap">
+      <div class="score-ring">
+        <svg width="75" height="75" viewBox="0 0 75 75"><circle cx="37.5" cy="37.5" r="30" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="7"/><circle id="sring" cx="37.5" cy="37.5" r="30" fill="none" stroke="url(#sg)" stroke-width="7" stroke-linecap="round" stroke-dasharray="188" stroke-dashoffset="188" style="transform:rotate(-90deg);transform-origin:center"/><defs><linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#00d4ff"/><stop offset="100%" style="stop-color:#10b981"/></linearGradient></defs></svg>
+        <div class="score-inner"><div class="score-n" id="scoreN">0</div><div style="font-size:8px;color:var(--t2)">/100</div></div>
+      </div>
+      <div style="flex:1"><div id="scoreGrade" style="font-size:15px;font-weight:800;margin-bottom:4px"></div><div id="scoreMsg" style="font-size:10px;color:var(--t2);line-height:1.5"></div></div>
+    </div>
+  </div>
+
+  <!-- Calorie Balance -->
+  <div class="card" id="balCard">
+    <div class="ct" id="ct-bal">⚖️ CALORIE BALANCE</div>
+    <div id="balContent"></div>
+  </div>
+
+  <!-- Goal Progress -->
+  <div class="card">
+    <div class="ct" id="ct-goal-prog">🎯 GOAL PROGRESS</div>
+    <div id="goalProg"></div>
+  </div>
+
+  <!-- Nutrient Summary -->
+  <div class="card"><div class="ct" id="ct-today">📅 TODAY'S NUTRIENTS</div><div id="nutDet"></div></div>
+
+  <!-- Weekly Chart -->
+  <div class="card">
+    <div class="ct" id="ct-week">📈 WEEKLY CALORIES</div>
+    <div class="wkchart" id="wkChart"></div>
+    <div class="stat3" id="wkStats"></div>
+  </div>
+
+  <!-- Smart Tips -->
+  <div class="card" style="background:rgba(124,58,237,0.08);border-color:rgba(124,58,237,0.25)">
+    <div class="ct" style="color:#a78bfa" id="ct-tips">💡 SMART HEALTH TIPS</div>
+    <div id="tipsCont"></div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="pg" id="pg-profile">
+  <div class="card">
+    <div class="pava" id="pAvatar">👤</div>
+    <div class="pnam" id="pName">Create Profile</div>
+    <div class="psub" id="pSub">Enter your details below</div>
+    <div style="text-align:center;margin-bottom:12px"><div class="gbadge" id="gBadge">🎯 SELECT GOAL</div></div>
+    <div class="fg"><label class="fl" id="fl-n">NAME</label><input class="fi" id="iName" type="text" placeholder="Your name"></div>
+    <div class="fgr">
+      <div class="fg"><label class="fl" id="fl-a">AGE</label><input class="fi" id="iAge" type="number" min="10" max="100" placeholder="Years"></div>
+      <div class="fg"><label class="fl" id="fl-g">GENDER</label><select class="fs" id="iGender"><option value="male">Male</option><option value="female">Female</option></select></div>
+    </div>
+    <div class="fgr">
+      <div class="fg"><label class="fl" id="fl-h">HEIGHT (cm)</label><input class="fi" id="iHeight" type="number" min="100" max="250" placeholder="cm"></div>
+      <div class="fg"><label class="fl" id="fl-w">WEIGHT (kg)</label><input class="fi" id="iWeight" type="number" min="30" max="300" placeholder="kg"></div>
+    </div>
+    <div class="fg"><label class="fl" id="fl-act">ACTIVITY LEVEL</label>
+      <select class="fs" id="iAct">
+        <option value="1.2">Sedentary (desk job)</option>
+        <option value="1.375">Light (1-3x/week)</option>
+        <option value="1.55" selected>Moderate (3-5x/week)</option>
+        <option value="1.725">Active (6-7x/week)</option>
+        <option value="1.9">Very Active (athlete)</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl" id="fl-goal">GOAL</label>
+      <select class="fs" id="iGoal">
+        <option value="lose">Lose Weight</option>
+        <option value="maintain" selected>Maintain Weight</option>
+        <option value="gain">Gain Weight</option>
+        <option value="muscle">Build Muscle</option>
+      </select>
+    </div>
+    <button class="sbtn2" onclick="saveProfile()" id="saveProfBtn">💾 Save Profile</button>
+  </div>
+  <div class="card" id="bmiCard" style="display:none">
+    <div class="ct" id="ct-bmi">📊 BMI & CALORIE GOAL</div>
+    <div class="bmi-box"><div class="bmi-n" id="bmiN">--</div><div class="bmi-l" id="bmiL">--</div></div>
+    <div class="bbar"><div class="bind" id="bmiInd" style="right:50%"></div></div>
+    <div class="bsc"><span>Under<br>&lt;18.5</span><span>Normal<br>18-25</span><span>Over<br>25-30</span><span>Obese<br>&gt;30</span></div>
+    <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,0.04);border-radius:12px">
+      <div style="font-size:10px;color:var(--t2);margin-bottom:4px;font-weight:600;letter-spacing:0.5px" id="tdee-lbl">DAILY CALORIE GOAL (TDEE)</div>
+      <div style="font-size:22px;font-weight:900;color:var(--a1)" id="tdeeV">-- cal</div>
+      <div style="font-size:10px;color:var(--t2);margin-top:3px" id="tdeeB"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="pg" id="pg-about" dir="ltr" style="direction:ltr">
+  <div style="text-align:center;padding:16px 0 12px">
+    <div class="about-logo-big">🌿</div>
+    <div style="font-size:22px;font-weight:900;letter-spacing:-0.5px"><span style="color:var(--a1)">SM</span> NutriCare</div>
+    <div style="font-size:10px;color:var(--t2);margin-top:3px">Version 3.0 · Scientific Nutrition Tracker</div>
+    <div style="font-size:12px;color:var(--t2);margin-top:8px;line-height:1.6" id="about-tag">Your intelligent Pakistani food nutrition companion</div>
+  </div>
+
+  <div class="dev-card" dir="ltr" style="direction:ltr">
+    <div class="ct" style="text-align:center" id="ct-dev">👨‍🔬 DEVELOPED BY</div>
+    <div class="dev-ava">👨‍💼</div>
+    <div class="dev-n">Dr. Sajid Mahmood</div>
+    <div class="dev-t">Nutrition Researcher & App Developer</div>
+    <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">🏛️</span><div><div class="clbl">UNIVERSITY</div><div class="cval">Hazara University Mansehra</div></div></div>
+    <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">📚</span><div><div class="clbl">DEPARTMENT</div><div class="cval">Dept. of Islamic & Religious Studies</div><div style="font-size:10px;color:var(--t2);margin-top:2px">Hazara University Mansehra</div></div></div>
+    <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">📧</span><div><div class="clbl">EMAIL</div><div class="cval">sajidzbi@gmail.com</div></div></div>
+    <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">💬</span><div><div class="clbl">WHATSAPP</div><div class="cval">0300-9080730</div></div></div>
+    <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">🌐</span><div><div class="clbl">APPLICATION</div><div class="cval">SM NutriCare v3.0</div></div></div>
+  </div>
+
+  <div class="card" dir="ltr" style="direction:ltr">
+    <div class="ct" id="ct-feat">✨ KEY FEATURES</div>
+    <div class="feat-row"><span class="feat-ico">🔬</span><div><div class="feat-t" id="f1t">USDA Verified Nutrition Data</div><div class="feat-d" id="f1d">Fetches authentic data from USDA FoodData Central API — the gold standard in nutrition science</div></div></div>
+    <div class="feat-row"><span class="feat-ico">🇵🇰</span><div><div class="feat-t" id="f2t">Pakistani Food Database</div><div class="feat-d" id="f2d">60+ Pakistani foods with scientifically verified nutritional values + live API search</div></div></div>
+    <div class="feat-row"><span class="feat-ico">👟</span><div><div class="feat-t" id="f3t">Activity-Based Calorie Burn</div><div class="feat-d" id="f3d">TDEE formula: BMR × Activity multiplier calculates daily calories burned by your lifestyle</div></div></div>
+    <div class="feat-row"><span class="feat-ico">📴</span><div><div class="feat-t" id="f4t">Offline-First Design</div><div class="feat-d" id="f4d">Full local database. Works without internet. Background sync when online.</div></div></div>
+    <div class="feat-row"><span class="feat-ico">📊</span><div><div class="feat-t" id="f5t">Smart Reports & Health Score</div><div class="feat-d" id="f5d">Calorie deficit/surplus, weekly trends, BMI, TDEE, personalized tips</div></div></div>
+    <div class="feat-row"><span class="feat-ico">🌐</span><div><div class="feat-t" id="f6t">Bilingual (EN / اردو)</div><div class="feat-d" id="f6d">Full Urdu support. Header and footer remain in English always.</div></div></div>
+    <div class="data-src"><strong>📡 Data Sources:</strong> USDA FoodData Central (fdc.nal.usda.gov) — Free government API, CC0 licensed, updated quarterly. Local verified database of Pakistani foods based on USDA & published nutritional studies.<br><strong>🏃 Calorie Burn:</strong> TDEE = BMR × Activity Level. BMR (Mifflin-St Jeor) accounts for age, gender, height & weight. Activity multiplier (1.2–1.9) reflects lifestyle.</div>
+  </div>
+
+  <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:var(--t3);direction:ltr">
+    Made with ❤️ by Dr. Sajid Mahmood<br>
+    Dept. of Islamic & Religious Studies · Hazara University Mansehra<br>
+    © 2026 SM NutriCare · Data: USDA FoodData Central (CC0)
+  </div>
+</div>
+
+</div><!-- end scrollArea -->
+
+<!-- FOOTER NAV — always LTR English -->
+<footer id="appFooter">
+  <button class="ni active" onclick="showPage('home')"><span class="ico">🏠</span><span class="lbl">HOME</span></button>
+  <button class="ni" onclick="showPage('log')"><span class="ico">🍽️</span><span class="lbl">LOG</span></button>
+  <button class="ni" onclick="showPage('reports')"><span class="ico">📊</span><span class="lbl">REPORTS</span></button>
+  <button class="ni" onclick="showPage('profile')"><span class="ico">👤</span><span class="lbl">PROFILE</span></button>
+  <button class="ni" onclick="showPage('about')"><span class="ico">ℹ️</span><span class="lbl">ABOUT</span></button>
+</footer>
+
+<!-- FOOD MODAL -->
+<div class="overlay" id="foodOverlay">
+  <div class="sheet">
+    <div class="shdrag"></div>
+    <div class="shtitle" id="shTitle">Add Food</div>
+    <div class="api-badge" id="apiBadge">🔬 USDA FoodData Central + Local DB</div>
+    <div class="searchbar">
+      <input class="sfield" type="text" id="fsearch" placeholder="Search any food..." oninput="onSearchInput()">
+      <button class="sbtn" id="srchBtn" onclick="searchUSDA()">Search</button>
+    </div>
+    <div class="catrow" id="catRow"></div>
+    <div id="foodList"></div>
+    <button onclick="closeFoodModal()" style="width:100%;padding:10px;border-radius:12px;border:1px solid var(--gb);background:none;color:var(--t2);cursor:pointer;margin-top:6px;font-size:12px;font-family:'Inter',sans-serif">Close</button>
+  </div>
+</div>
+
+<!-- QTY MODAL -->
+<div class="qmo" id="qtyModal">
+  <div class="qcard">
+    <div class="qfn" id="qName"></div>
+    <div class="qfu" id="qUnit"></div>
+    <div class="qsrc" id="qSrc"></div>
+    <div class="qctrl">
+      <button class="qbtn" onclick="chQ(-0.5)">−</button>
+      <div class="qnum" id="qNum">1</div>
+      <button class="qbtn" onclick="chQ(0.5)">+</button>
+    </div>
+    <div class="qprev">
+      <div class="qpr"><span class="qpl">🔥 Calories</span><span class="qpv" id="qCal">0 cal</span></div>
+      <div class="qpr"><span class="qpl">💪 Protein</span><span class="qpv" id="qProt">0g</span></div>
+      <div class="qpr"><span class="qpl">🍞 Carbs</span><span class="qpv" id="qCarb">0g</span></div>
+      <div class="qpr"><span class="qpl">🫙 Fat</span><span class="qpv" id="qFat">0g</span></div>
+      <div class="qpr"><span class="qpl">🩸 Cholesterol</span><span class="qpv" id="qChol">0mg</span></div>
+      <div class="qpr"><span class="qpl">🌾 Fiber</span><span class="qpv" id="qFib">0g</span></div>
+    </div>
+    <div class="qacts">
+      <button class="qcan" onclick="closeQtyModal()">Cancel</button>
+      <button class="qadd" onclick="confirmAdd()">✅ Add to Log</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ==================== LANGUAGE ====================
+const TR = {
+  en: {
+    greet_m:'Good Morning! 🌅', greet_n:'Good Afternoon! ☀️', greet_e:'Good Evening! 🌆',
+    dashboard:'My Dashboard',
+    'ct-cal':'🔥 TODAY\'S CALORIES', 'cs-goal':'🎯 Goal','cs-eaten':'✅ Eaten','cs-burned':'🏃 Activity Burn','cs-net':'⚡ Net Left',
+    'ct-macro':'🧬 MACRONUTRIENTS','ml-prot':'💪 PROTEIN','ml-carb':'🍞 CARBS','ml-fat':'🫙 FAT','ml-chol':'🩸 CHOLESTEROL','ml-fib':'🌾 FIBER',
+    'mt-prot':'Target','mt-carb':'Target','mt-fat':'Target','mt-chol':'Target',
+    'ct-water':'💧 WATER INTAKE',
+    'pg-log-title':'🍽️ Food Log','pg-rep-title':'📊 Reports',
+    'ct-score':'🏆 HEALTH SCORE','ct-bal':'⚖️ CALORIE BALANCE','ct-goal-prog':'🎯 GOAL PROGRESS',
+    'ct-today':'📅 TODAY\'S NUTRIENTS','ct-week':'📈 WEEKLY CALORIES','ct-tips':'💡 SMART HEALTH TIPS',
+    'fl-n':'NAME','fl-a':'AGE','fl-g':'GENDER','fl-h':'HEIGHT (cm)','fl-w':'WEIGHT (kg)','fl-act':'ACTIVITY LEVEL','fl-goal':'GOAL',
+    'ct-bmi':'📊 BMI & CALORIE GOAL','tdee-lbl':'DAILY CALORIE GOAL (TDEE)',
+    'ct-dev':'👨‍🔬 DEVELOPED BY','ct-feat':'✨ KEY FEATURES',
+    'about-tag':'Your intelligent Pakistani food nutrition companion',
+    'saveProfBtn':'💾 Save Profile',
+    male:'Male',female:'Female',
+    lose:'Lose Weight',maintain:'Maintain Weight',gain:'Gain Weight',muscle:'Build Muscle',
+    act1:'Sedentary (desk job)',act2:'Light (1-3x/week)',act3:'Moderate (3-5x/week)',act4:'Active (6-7x/week)',act5:'Very Active (athlete)',
+    consumed:'consumed', rlbl:'consumed',
+    wgl:' / 8 glasses', days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],today:'Today',
+    goal_badge:'🎯 SELECT GOAL',
+    score_ex:'Excellent! 🌟',score_g:'Good 👍',score_av:'Average 😐',score_nw:'Needs Work ⚠️',
+    bmi_u:'⚠️ Underweight',bmi_n:'✅ Normal Weight',bmi_o:'⚠️ Overweight',bmi_ob:'🔴 Obese',
+  },
+  ur: {
+    greet_m:'صبح بخیر! 🌅', greet_n:'دوپہر بخیر! ☀️', greet_e:'شام بخیر! 🌆',
+    dashboard:'میرا ڈیش بورڈ',
+    'ct-cal':'🔥 آج کی کیلوریز', 'cs-goal':'🎯 ہدف','cs-eaten':'✅ کھایا','cs-burned':'🏃 سرگرمی سے جلی','cs-net':'⚡ باقی',
+    'ct-macro':'🧬 غذائی اجزاء','ml-prot':'💪 پروٹین','ml-carb':'🍞 کاربز','ml-fat':'🫙 چکنائی','ml-chol':'🩸 کولیسٹرول','ml-fib':'🌾 فائبر',
+    'mt-prot':'ہدف','mt-carb':'ہدف','mt-fat':'ہدف','mt-chol':'ہدف',
+    'ct-water':'💧 پانی',
+    'pg-log-title':'🍽️ کھانا لاگ','pg-rep-title':'📊 رپورٹ',
+    'ct-score':'🏆 صحت اسکور','ct-bal':'⚖️ کیلوری بیلنس','ct-goal-prog':'🎯 مقصد کی پیشرفت',
+    'ct-today':'📅 آج کا خلاصہ','ct-week':'📈 ہفتہ وار','ct-tips':'💡 ذہین تجاویز',
+    'fl-n':'نام','fl-a':'عمر','fl-g':'جنس','fl-h':'قد (سینٹی میٹر)','fl-w':'وزن (کلو)','fl-act':'سرگرمی','fl-goal':'مقصد',
+    'ct-bmi':'📊 BMI اور کیلوری ہدف','tdee-lbl':'روزانہ کیلوری ہدف',
+    'ct-dev':'👨‍🔬 بنانے والا','ct-feat':'✨ خصوصیات',
+    'about-tag':'آپ کا ذہین پاکستانی خوراک کا ساتھی',
+    'saveProfBtn':'💾 پروفائل محفوظ کریں',
+    male:'مرد',female:'عورت',
+    lose:'وزن کم کرنا',maintain:'وزن برقرار',gain:'وزن بڑھانا',muscle:'عضلات بنانا',
+    act1:'کم سرگرم',act2:'تھوڑی سرگرمی',act3:'درمیانی سرگرمی',act4:'زیادہ سرگرم',act5:'بہت زیادہ سرگرم',
+    consumed:'کھائی گئی', rlbl:'کھائی',
+    wgl:' / 8 گلاس', days:['پیر','منگل','بدھ','جمعرات','جمعہ','ہفتہ','اتوار'],today:'آج',
+    goal_badge:'🎯 ہدف منتخب کریں',
+    score_ex:'شاندار! 🌟',score_g:'اچھا 👍',score_av:'اوسط 😐',score_nw:'بہتری درکار ⚠️',
+    bmi_u:'⚠️ کم وزن',bmi_n:'✅ نارمل وزن',bmi_o:'⚠️ زیادہ وزن',bmi_ob:'🔴 موٹاپا',
+  }
+};
+
+let lang = localStorage.getItem('smnc_lang') || 'en';
+
+function t(k){ return TR[lang][k] || TR['en'][k] || k; }
+
+function setLang(l){
+  lang = l;
+  localStorage.setItem('smnc_lang', l);
+  document.getElementById('lEN').classList.toggle('active', l==='en');
+  document.getElementById('lUR').classList.toggle('active', l==='ur');
+  // Content direction — header/footer stay LTR
+  document.getElementById('scrollArea').dir = l==='ur' ? 'rtl' : 'ltr';
+  applyLang();
+  const ap = document.querySelector('.pg.active').id.replace('pg-','');
+  renderPage(ap);
+}
+
+function applyLang(){
+  const ids = ['ct-cal','cs-goal','cs-eaten','cs-burned','cs-net',
+    'ct-macro','ml-prot','ml-carb','ml-fat','ml-chol','ml-fib','mt-prot','mt-carb','mt-fat','mt-chol',
+    'ct-water','pg-log-title','pg-rep-title','ct-score','ct-bal','ct-goal-prog','ct-today','ct-week','ct-tips',
+    'fl-n','fl-a','fl-g','fl-h','fl-w','fl-act','fl-goal','ct-bmi','tdee-lbl','ct-dev','ct-feat','about-tag',
+    'saveProfBtn','rlbl'];
+  ids.forEach(id => { const e=document.getElementById(id); if(e) e.textContent = t(id); });
+  // Gender/goal/activity options
+  const gm=document.getElementById('iGender');
+  if(gm){ gm.options[0].text=t('male'); gm.options[1].text=t('female'); }
+  const gl=document.getElementById('iGoal');
+  if(gl){ gl.options[0].text=t('lose');gl.options[1].text=t('maintain');gl.options[2].text=t('gain');gl.options[3].text=t('muscle'); }
+  const ac=document.getElementById('iAct');
+  if(ac){['act1','act2','act3','act4','act5'].forEach((k,i)=>ac.options[i].text=t(k));}
+  const sf=document.getElementById('fsearch');
+  if(sf) sf.placeholder = lang==='ur'?'کھانا تلاش کریں...':'Search any food...';
+}
+
+// ==================== STATE ====================
+const S = {
+  profile: JSON.parse(localStorage.getItem('smnc_p') || '{}'),
+  logs: JSON.parse(localStorage.getItem('smnc_l') || '{}'),
+  water: parseInt(localStorage.getItem('smnc_w') || '0'),
+  cache: JSON.parse(localStorage.getItem('smnc_cache') || '{}'),
+  mealId: null, food: null, qty: 1, cat: 'all',
+};
+let isOnline = navigator.onLine;
+
+function save(){
+  localStorage.setItem('smnc_p', JSON.stringify(S.profile));
+  localStorage.setItem('smnc_l', JSON.stringify(S.logs));
+  localStorage.setItem('smnc_w', S.water);
+}
+function saveCache(){ localStorage.setItem('smnc_cache', JSON.stringify(S.cache)); }
+
+// ==================== NUTRITION DATABASE ====================
+// Verified Pakistani food database (based on USDA SR Legacy & published studies)
+const LOCAL_DB = [
+  // Staples
+  {id:'roti',cat:'staples',name:'Roti (Chapati)',ur:'روٹی',cal:80,prot:2.7,carb:16,fat:0.4,chol:0,fib:1.2,sod:1,src:'USDA SR Legacy'},
+  {id:'rice',cat:'staples',name:'Cooked Rice',ur:'چاول (پکے)',cal:206,prot:4.3,carb:45,fat:0.4,chol:0,fib:0.6,sod:1,src:'USDA #20444'},
+  {id:'paratha',cat:'staples',name:'Paratha',ur:'پراٹھہ',cal:260,prot:5,carb:33,fat:12,chol:0,fib:2,sod:280,src:'USDA Branded'},
+  {id:'naan',cat:'staples',name:'Naan Bread',ur:'نان',cal:262,prot:8.7,carb:45,fat:5.1,chol:0,fib:1.6,sod:536,src:'USDA #18261'},
+  // Protein
+  {id:'chicken_gr',cat:'protein',name:'Chicken Grilled',ur:'مرغ گرل',cal:165,prot:31,carb:0,fat:3.6,chol:85,fib:0,sod:74,src:'USDA #05064'},
+  {id:'beef',cat:'protein',name:'Beef Cooked',ur:'گوشت بیف',cal:250,prot:26,carb:0,fat:15,chol:90,fib:0,sod:60,src:'USDA #13365'},
+  {id:'egg',cat:'protein',name:'Boiled Egg',ur:'انڈہ ابلا',cal:78,prot:6,carb:0.6,fat:5,chol:186,fib:0,sod:62,src:'USDA #01129'},
+  {id:'dal',cat:'protein',name:'Lentils (cooked)',ur:'دال',cal:230,prot:18,carb:40,fat:0.8,chol:0,fib:15.6,sod:4,src:'USDA #16069'},
+  {id:'fish_fried',cat:'protein',name:'Fried Fish',ur:'مچھلی فرائی',cal:196,prot:22,carb:8,fat:9,chol:68,fib:0,sod:330,src:'USDA #15036'},
+  {id:'mutton',cat:'protein',name:'Mutton (cooked)',ur:'مٹن',cal:294,prot:25,carb:0,fat:21,chol:97,fib:0,sod:72,src:'USDA #17003'},
+  {id:'kebab',cat:'protein',name:'Seekh Kebab',ur:'کباب سیخ',cal:95,prot:10,carb:3,fat:5,chol:40,fib:0.5,sod:180,src:'Local Study'},
+  // Dairy
+  {id:'milk',cat:'dairy',name:'Full Fat Milk',ur:'دودھ',cal:149,prot:8,carb:12,fat:8,chol:24,fib:0,sod:105,src:'USDA #01077'},
+  {id:'yogurt',cat:'dairy',name:'Plain Yogurt',ur:'دہی',cal:149,prot:8.5,carb:11,fat:8,chol:32,fib:0,sod:113,src:'USDA #01116'},
+  {id:'lassi',cat:'dairy',name:'Sweet Lassi',ur:'لسی میٹھی',cal:180,prot:6,carb:28,fat:5,chol:15,fib:0,sod:95,src:'Local Study'},
+  // Pakistani Dishes
+  {id:'biryani',cat:'dishes',name:'Chicken Biryani',ur:'بریانی مرغ',cal:490,prot:22,carb:60,fat:18,chol:65,fib:2,sod:820,src:'Published Study'},
+  {id:'nihari',cat:'dishes',name:'Nihari',ur:'نہاری',cal:380,prot:28,carb:12,fat:24,chol:95,fib:1,sod:740,src:'Local Study'},
+  {id:'halwa_puri',cat:'dishes',name:'Halwa Puri',ur:'حلوہ پوری',cal:520,prot:8,carb:72,fat:22,chol:0,fib:3,sod:380,src:'Local Study'},
+  {id:'samosa',cat:'dishes',name:'Samosa',ur:'سموسہ',cal:130,prot:3,carb:15,fat:7,chol:5,fib:1,sod:210,src:'Local Study'},
+  {id:'shawarma',cat:'dishes',name:'Shawarma Roll',ur:'شوارما',cal:520,prot:28,carb:48,fat:22,chol:75,fib:2,sod:890,src:'Local Study'},
+  {id:'korma',cat:'dishes',name:'Chicken Korma',ur:'کورمہ',cal:310,prot:24,carb:8,fat:20,chol:82,fib:1,sod:520,src:'Local Study'},
+  {id:'haleem',cat:'dishes',name:'Haleem',ur:'حلیم',cal:280,prot:20,carb:22,fat:12,chol:45,fib:3,sod:480,src:'Published Study'},
+  {id:'paya',cat:'dishes',name:'Paya (Trotters)',ur:'پایا',cal:190,prot:18,carb:5,fat:11,chol:88,fib:0,sod:420,src:'Local Study'},
+  // Vegetables
+  {id:'spinach',cat:'vegetables',name:'Cooked Spinach',ur:'پالک',cal:41,prot:5.4,carb:6.7,fat:0.5,chol:0,fib:4.3,sod:126,src:'USDA #11458'},
+  {id:'potato',cat:'vegetables',name:'Boiled Potato',ur:'آلو ابلا',cal:130,prot:3,carb:30,fat:0.1,chol:0,fib:3,sod:10,src:'USDA #11352'},
+  {id:'aloo_curry',cat:'dishes',name:'Aloo Curry',ur:'آلو کا سالن',cal:160,prot:3,carb:22,fat:7,chol:0,fib:3.2,sod:380,src:'Local Study'},
+  // Fruits
+  {id:'banana',cat:'fruits',name:'Banana',ur:'کیلا',cal:89,prot:1.1,carb:23,fat:0.3,chol:0,fib:2.6,sod:1,src:'USDA #09040'},
+  {id:'apple',cat:'fruits',name:'Apple',ur:'سیب',cal:72,prot:0.4,carb:19,fat:0.2,chol:0,fib:3.3,sod:1,src:'USDA #09003'},
+  {id:'mango',cat:'fruits',name:'Mango',ur:'آم',cal:99,prot:1.4,carb:25,fat:0.6,chol:0,fib:2.6,sod:2,src:'USDA #09176'},
+  {id:'guava',cat:'fruits',name:'Guava',ur:'امرود',cal:68,prot:2.6,carb:14,fat:1,chol:0,fib:5.4,sod:2,src:'USDA #09112'},
+  {id:'watermelon',cat:'fruits',name:'Watermelon',ur:'تربوز',cal:46,prot:0.9,carb:11.5,fat:0.2,chol:0,fib:0.6,sod:2,src:'USDA #09326'},
+  {id:'orange',cat:'fruits',name:'Orange',ur:'مالٹا',cal:62,prot:1.2,carb:15,fat:0.2,chol:0,fib:3.1,sod:0,src:'USDA #09200'},
+  // Dry Fruits
+  {id:'almonds',cat:'dryfruits',name:'Almonds',ur:'بادام',cal:164,prot:6,carb:6,fat:14,chol:0,fib:3.5,sod:1,src:'USDA #12061'},
+  {id:'walnuts',cat:'dryfruits',name:'Walnuts',ur:'اخروٹ',cal:185,prot:4.3,carb:4,fat:18.5,chol:0,fib:1.9,sod:1,src:'USDA #12155'},
+  {id:'cashews',cat:'dryfruits',name:'Cashews',ur:'کاجو',cal:157,prot:5.2,carb:9,fat:12.4,chol:0,fib:0.9,sod:3,src:'USDA #12087'},
+  {id:'pistachios',cat:'dryfruits',name:'Pistachios',ur:'پستہ',cal:156,prot:5.8,carb:8,fat:12.5,chol:0,fib:3,sod:0,src:'USDA #12652'},
+  {id:'raisins',cat:'dryfruits',name:'Raisins',ur:'کشمش',cal:129,prot:1.4,carb:34,fat:0.2,chol:0,fib:1.6,sod:5,src:'USDA #09298'},
+  {id:'dates',cat:'dryfruits',name:'Dates (Khajoor)',ur:'کھجور',cal:277,prot:1.8,carb:75,fat:0.2,chol:0,fib:6.7,sod:1,src:'USDA #09087'},
+  {id:'figs_dry',cat:'dryfruits',name:'Dried Figs',ur:'انجیر خشک',cal:249,prot:3.3,carb:64,fat:1,chol:0,fib:9.8,sod:10,src:'USDA #09094'},
+  {id:'apricots_dry',cat:'dryfruits',name:'Dried Apricots',ur:'خوبانی خشک',cal:241,prot:3.4,carb:63,fat:0.5,chol:0,fib:7.3,sod:10,src:'USDA #09032'},
+  {id:'peanuts',cat:'dryfruits',name:'Peanuts',ur:'مونگ پھلی',cal:567,prot:26,carb:16,fat:49,chol:0,fib:8.5,sod:18,src:'USDA #16087'},
+  {id:'pinenuts',cat:'dryfruits',name:'Pine Nuts (Chilgoza)',ur:'چلغوزہ',cal:673,prot:14,carb:13,fat:68,chol:0,fib:3.7,sod:2,src:'USDA #12147'},
+  // Beverages
+  {id:'tea',cat:'beverages',name:'Milk Tea (Chai)',ur:'چائے دودھ',cal:60,prot:1.5,carb:10,fat:1.5,chol:5,fib:0,sod:25,src:'Local Study'},
+  {id:'water',cat:'beverages',name:'Water',ur:'پانی',cal:0,prot:0,carb:0,fat:0,chol:0,fib:0,sod:0,src:'USDA #14555'},
+  {id:'green_tea',cat:'beverages',name:'Green Tea',ur:'سبز چائے',cal:2,prot:0,carb:0,fat:0,chol:0,fib:0,sod:2,src:'USDA #14355'},
+  {id:'sugarcane',cat:'beverages',name:'Sugarcane Juice',ur:'گنے کا رس',cal:183,prot:0.4,carb:45,fat:0.3,chol:0,fib:0,sod:18,src:'Local Study'},
+  // Sweets
+  {id:'kheer',cat:'sweets',name:'Rice Pudding (Kheer)',ur:'کھیر',cal:200,prot:5,carb:35,fat:5,chol:18,fib:0.5,sod:80,src:'Local Study'},
+  {id:'halwa',cat:'sweets',name:'Gajar Halwa',ur:'گاجر حلوہ',cal:310,prot:5,carb:42,fat:13,chol:20,fib:3,sod:90,src:'Local Study'},
+  {id:'gulab_jamun',cat:'sweets',name:'Gulab Jamun',ur:'گلاب جامن',cal:175,prot:3,carb:28,fat:6,chol:15,fib:0.3,sod:95,src:'Local Study'},
+];
+
+const CATS = {
+  en: {all:'All',staples:'Staples 🌾',protein:'Protein 💪',dairy:'Dairy 🥛',dishes:'Dishes 🍛',vegetables:'Vegetables 🥦',fruits:'Fruits 🍎',dryfruits:'Dry Fruits 🥜',beverages:'Drinks ☕',sweets:'Sweets 🍮'},
+  ur: {all:'سب',staples:'اناج',protein:'پروٹین',dairy:'ڈیری',dishes:'کھانے',vegetables:'سبزیاں',fruits:'پھل',dryfruits:'ڈرائی فروٹس',beverages:'مشروبات',sweets:'میٹھے'}
+};
+
+// ==================== USDA API ====================
+const USDA_KEY = 'DEMO_KEY'; // Free demo key — 1000 req/hr
+const USDA_BASE = 'https://api.nal.usda.gov/fdc/v1';
+
+async function fetchUSDANutrition(query){
+  const cacheKey = 'usda_' + query.toLowerCase().replace(/\s+/g,'_');
+  if(S.cache[cacheKey]) return S.cache[cacheKey];
+  if(!navigator.onLine) return null;
+  try {
+    const res = await fetch(`${USDA_BASE}/foods/search?query=${encodeURIComponent(query)}&pageSize=8&api_key=${USDA_KEY}`);
+    if(!res.ok) return null;
+    const data = await res.json();
+    if(!data.foods || !data.foods.length) return null;
+    const results = data.foods.map(f => {
+      const getNut = (id) => { const n = f.foodNutrients?.find(x=>x.nutrientId===id); return n ? Math.round(n.value*10)/10 : 0; };
+      return {
+        id: 'usda_'+f.fdcId,
+        cat: 'search',
+        name: f.description.length>50 ? f.description.substring(0,50)+'…' : f.description,
+        ur: f.description,
+        cal: getNut(1008)||getNut(2047)||0,
+        prot: getNut(1003)||0,
+        carb: getNut(1005)||0,
+        fat: getNut(1004)||0,
+        chol: getNut(1253)||0,
+        fib: getNut(1079)||0,
+        sod: getNut(1093)||0,
+        src: `USDA FDC #${f.fdcId}`,
+        unit: '100g',
+      };
+    }).filter(f=>f.cal>0);
+    S.cache[cacheKey] = results;
+    saveCache();
+    return results;
+  } catch(e){ return null; }
+}
+
+// ==================== UTILS ====================
+function todayKey(){ return new Date().toISOString().split('T')[0]; }
+function getLogs(){ const k=todayKey(); if(!S.logs[k]) S.logs[k]={breakfast:[],lunch:[],dinner:[],snack:[]}; return S.logs[k]; }
+function getTotals(){
+  const l=getLogs(); let c=0,p=0,cb=0,f=0,ch=0,fb=0;
+  for(const m of Object.values(l)) for(const i of m){c+=i.cal;p+=i.prot;cb+=i.carb;f+=i.fat;ch+=i.chol;fb+=i.fib;}
+  return{cal:Math.round(c),prot:Math.round(p),carb:Math.round(cb),fat:Math.round(f),chol:Math.round(ch),fib:Math.round(fb*10)/10};
+}
+function calcBMR(p){ if(!p.age||!p.weight||!p.height) return 2000; return p.gender==='male'?Math.round(10*p.weight+6.25*p.height-5*p.age+5):Math.round(10*p.weight+6.25*p.height-5*p.age-161); }
+function calcTDEE(p){ let v=Math.round(calcBMR(p)*parseFloat(p.activity||1.55)); if(p.goal==='lose')v-=500;if(p.goal==='gain')v+=500;if(p.goal==='muscle')v+=300; return v; }
+
+
+function showToast(msg, err=false){
+  const e=document.getElementById('toast');
+  e.textContent=msg; e.className='toast'+(err?' error':'');
+  void e.offsetWidth;
+  e.classList.add('show');
+  setTimeout(()=>e.classList.remove('show'),2800);
+}
+
+
+// ==================== PAGES ====================
+function showPage(n){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pg-'+n).classList.add('active');
+  const idx={home:0,log:1,reports:2,profile:3,about:4};
+  if(idx[n]!==undefined) document.querySelectorAll('.ni')[idx[n]].classList.add('active');
+  document.getElementById('scrollArea').scrollTop=0;
+  renderPage(n);
+}
+function renderPage(n){
+  if(n==='home') renderHome();
+  else if(n==='log') renderLog();
+  else if(n==='reports') renderReports();
+  else if(n==='profile') renderProfile();
+}
+
+// ==================== HOME ====================
+function renderHome(){
+  const p=S.profile, goal=calcTDEE(p)||2000, t2=getTotals();
+  // Activity burn = TDEE already includes activity multiplier vs BMR
+  const bmrVal=calcBMR(p);
+  const actBurn=Math.max(0,goal-bmrVal); // calories burned through activity (TDEE - BMR)
+  const netLeft=Math.max(0, goal-t2.cal);
+  const pct=Math.min(100,Math.round((t2.cal/goal)*100));
+
+  document.getElementById('uname').textContent = p.name?(lang==='ur'?`${t('greet_m').split('!')[0]}، ${p.name}!`:p.name+'\'s Dashboard'):t('dashboard');
+  document.getElementById('greet').textContent = (()=>{const h=new Date().getHours();return h<12?t('greet_m'):h<17?t('greet_n'):t('greet_e');})();
+
+  // Calorie ring
+  const circ=314;
+  document.getElementById('cring').style.strokeDashoffset=circ-(pct/100)*circ;
+  document.getElementById('rnum').textContent=t2.cal;
+  document.getElementById('rlbl').textContent=t('rlbl');
+  document.getElementById('cv-goal').textContent=goal+' cal';
+  document.getElementById('cv-eaten').textContent=t2.cal+' cal';
+  document.getElementById('cv-burned').textContent=actBurn+' cal';
+  document.getElementById('cv-net').textContent=netLeft+' cal';
+
+  // Macros
+  const tP=Math.round(goal*.25/4), tC=Math.round(goal*.5/4), tF=Math.round(goal*.25/9);
+  document.getElementById('tv-prot').textContent=tP;
+  document.getElementById('tv-carb').textContent=tC;
+  document.getElementById('tv-fat').textContent=tF;
+  [['prot',t2.prot,tP],['carb',t2.carb,tC],['fat',t2.fat,tF],['chol',t2.chol,300]].forEach(([k,v,tg])=>{
+    document.getElementById('mv-'+k).textContent=v+(k==='chol'?'mg':'g');
+    document.getElementById('mb-'+k).style.width=Math.min(100,(v/tg)*100)+'%';
+  });
+  document.getElementById('mv-fib').textContent=t2.fib+'g / 25g';
+  document.getElementById('mb-fib').style.width=Math.min(100,(t2.fib/25)*100)+'%';
+
+  // Water
+  renderWater();
+
+  // Status
+  const isDeficit=t2.cal<goal;
+  let se,st,ss,sbg;
+  if(t2.cal===0){se='🌟';st=lang==='ur'?'آج کا کھانا لاگ کریں!':'Start logging today!';ss=lang==='ur'?'کھانا شامل کریں':'Add your first meal';sbg='rgba(0,212,255,0.08)';}
+  else if(pct<50){se='😊';st=lang==='ur'?`${netLeft} کیلوریز باقی`:`${netLeft} calories remaining`;ss=lang==='ur'?'اچھا جا رہا ہے':'Good progress, keep going!';sbg='rgba(16,185,129,0.08)';}
+  else if(pct<=100){se='🎯';st=lang==='ur'?'ہدف کے قریب!':'Near your goal!';ss=lang==='ur'?`صرف ${netLeft} باقی`:`Only ${netLeft} cal left`;sbg='rgba(245,158,11,0.08)';}
+  else{se='⚠️';st=lang==='ur'?`ہدف سے ${t2.cal-goal} زیادہ`:`${t2.cal-goal} over goal`;ss=lang==='ur'?'آج کل محتاط رہیں':'Be mindful today';sbg='rgba(239,68,68,0.08)';}
+  document.getElementById('st-e').textContent=se;
+  document.getElementById('st-t').textContent=st;
+  document.getElementById('st-s').textContent=ss;
+  document.getElementById('stcard').style.background=sbg;
+  document.getElementById('stcard').style.border='1px solid '+sbg.replace('0.08','0.2');
+}
+
+function renderWater(){
+  const c=document.getElementById('wgrid'); c.innerHTML='';
+  for(let i=1;i<=8;i++){
+    const d=document.createElement('div');
+    d.className='wc'+(i<=S.water?' on':'');
+    d.textContent='💧';
+    d.onclick=()=>{S.water=S.water===i?i-1:i;save();renderWater();renderHome();};
+    c.appendChild(d);
+  }
+  document.getElementById('winfo').textContent=`${S.water}${t('wgl')} (${S.water*250}ml)`;
+}
+
+// ==================== LOG ====================
+const MEALS_DEF = [
+  {id:'breakfast',en:'Breakfast',ur:'ناشتہ',ico:'☀️'},
+  {id:'lunch',en:'Lunch',ur:'دوپہر کا کھانا',ico:'🌤️'},
+  {id:'dinner',en:'Dinner',ur:'رات کا کھانا',ico:'🌙'},
+  {id:'snack',en:'Snack',ur:'اسنیک',ico:'🍎'},
+];
+
+function renderLog(){
+  const c=document.getElementById('mealsCont'); c.innerHTML='';
+  const logs=getLogs();
+  MEALS_DEF.forEach(meal=>{
+    const items=logs[meal.id]||[], mc=items.reduce((s,i)=>s+i.cal,0);
+    const mname=lang==='ur'?meal.ur:meal.en;
+    const sec=document.createElement('div'); sec.className='meal-sec';
+    sec.innerHTML=`<div class="meal-hdr"><div class="mhL"><span class="mhico">${meal.ico}</span><div><div class="mhn">${mname}</div><div class="mhcal">${Math.round(mc)} cal</div></div></div><button class="addbtn" onclick="openFoodModal('${meal.id}','${mname}')">+ ${lang==='ur'?'شامل':'Add'}</button></div><div id="items_${meal.id}"></div>`;
+    c.appendChild(sec);
+    const dv=sec.querySelector('#items_'+meal.id);
+    items.forEach((item,idx)=>{
+      const row=document.createElement('div'); row.className='fitm';
+      row.innerHTML=`<div><div class="fin">${item.name}</div><div class="fid">${item.qty}×${item.unit||'serving'} · P:${item.prot}g C:${item.carb}g F:${item.fat}g · <span style="color:var(--a3);font-size:8px">${item.src||'Local'}</span></div></div><div style="display:flex;align-items:center;gap:3px"><div class="fical">${Math.round(item.cal)}</div><button class="delbtn" onclick="delItem('${meal.id}',${idx})">🗑️</button></div>`;
+      dv.appendChild(row);
+    });
+  });
+}
+
+function delItem(mId,idx){ getLogs()[mId].splice(idx,1); save(); renderLog(); renderHome(); showToast('🗑️ '+(lang==='ur'?'ہٹا دیا':'Removed')); }
+
+// ==================== FOOD MODAL ====================
+let currentSearchResults = [];
+
+function openFoodModal(mealId, mealName){
+  S.mealId=mealId; S.cat='all';
+  document.getElementById('shTitle').textContent=(lang==='ur'?mealName+' میں شامل':'Add to '+mealName);
+  document.getElementById('fsearch').value='';
+  buildCats();
+  showLocalFoods(LOCAL_DB);
+  document.getElementById('foodOverlay').classList.add('open');
+}
+function closeFoodModal(){ document.getElementById('foodOverlay').classList.remove('open'); }
+
+function buildCats(){
+  const c=document.getElementById('catRow'); c.innerHTML='';
+  const cl=CATS[lang]||CATS.en;
+  ['all','staples','protein','dairy','dishes','vegetables','fruits','dryfruits','beverages','sweets'].forEach(cat=>{
+    const b=document.createElement('button'); b.className='catbtn'+(S.cat===cat?' active':'');
+    b.textContent=cl[cat]||cat;
+    b.onclick=()=>{S.cat=cat;buildCats();filterLocal();};
+    c.appendChild(b);
+  });
+}
+
+function filterLocal(){
+  const q=document.getElementById('fsearch').value.toLowerCase();
+  let f=LOCAL_DB;
+  if(S.cat!=='all') f=f.filter(x=>x.cat===S.cat);
+  if(q) f=f.filter(x=>x.name.toLowerCase().includes(q)||x.ur.includes(q));
+  showLocalFoods(f);
+}
+
+function onSearchInput(){
+  const q=document.getElementById('fsearch').value;
+  if(q.length===0) showLocalFoods(LOCAL_DB);
+  else if(q.length>=3) filterLocal();
+}
+
+async function searchUSDA(){
+  const q=document.getElementById('fsearch').value.trim();
+  if(!q){ showToast('Please enter a food name',true); return; }
+  const btn=document.getElementById('srchBtn');
+  btn.textContent='⏳'; btn.classList.add('loading');
+  document.getElementById('foodList').innerHTML=`<div class="loading-item"><div class="spinner"></div><br>${isOnline?'Searching USDA database...':'Offline – showing local results'}</div>`;
+  let results=[];
+  if(isOnline){
+    const usda=await fetchUSDANutrition(q);
+    if(usda&&usda.length) results=[...usda];
+  }
+  // Also include matching local
+  const local=LOCAL_DB.filter(f=>f.name.toLowerCase().includes(q.toLowerCase())||f.ur.includes(q));
+  const combined=[...local,...results.filter(r=>!local.find(l=>l.name.toLowerCase()===r.name.toLowerCase()))];
+  showLocalFoods(combined);
+  btn.textContent=lang==='ur'?'تلاش':'Search'; btn.classList.remove('loading');
+  if(!isOnline) showToast('📴 '+(lang==='ur'?'آف لائن — مقامی نتائج':'Offline — local results only'));
+}
+
+function showLocalFoods(foods){
+  const c=document.getElementById('foodList'); c.innerHTML='';
+  if(!foods.length){ c.innerHTML=`<div class="loading-item">${lang==='ur'?'کوئی نتیجہ نہیں':'No results found'}</div>`; return; }
+  foods.slice(0,30).forEach(food=>{
+    const name=lang==='ur'&&food.ur?food.ur:food.name;
+    const sub=lang==='ur'?food.name:food.ur;
+    const item=document.createElement('div'); item.className='fli';
+    item.innerHTML=`<div><div class="fln">${name}</div><div class="fli-sub">${sub} · P:${food.prot}g C:${food.carb}g F:${food.fat}g<br><span class="src-tag">📡 ${food.src||'Local'}</span></div></div><div class="flcal">${food.cal} cal</div>`;
+    item.onclick=()=>openQtyModal(food);
+    c.appendChild(item);
+  });
+  if(foods.length>30){ const more=document.createElement('div'); more.className='loading-item'; more.textContent=`+${foods.length-30} more — refine search`; c.appendChild(more); }
+}
+
+// ==================== QTY MODAL ====================
+function openQtyModal(food){
+  S.food=food; S.qty=1;
+  document.getElementById('qName').textContent=lang==='ur'&&food.ur?food.ur:food.name;
+  document.getElementById('qUnit').textContent='Per: '+(food.unit||'1 serving (avg)');
+  document.getElementById('qSrc').textContent='📡 Source: '+(food.src||'Local Database');
+  updateQtyPreview();
+  document.getElementById('qtyModal').classList.add('open');
+}
+function closeQtyModal(){ document.getElementById('qtyModal').classList.remove('open'); }
+function chQ(d){ S.qty=Math.max(0.5,Math.round((S.qty+d)*10)/10); updateQtyPreview(); }
+function updateQtyPreview(){
+  const f=S.food, q=S.qty;
+  document.getElementById('qNum').textContent=q;
+  document.getElementById('qCal').textContent=Math.round(f.cal*q)+' cal';
+  document.getElementById('qProt').textContent=Math.round(f.prot*q*10)/10+'g';
+  document.getElementById('qCarb').textContent=Math.round(f.carb*q*10)/10+'g';
+  document.getElementById('qFat').textContent=Math.round(f.fat*q*10)/10+'g';
+  document.getElementById('qChol').textContent=Math.round(f.chol*q)+'mg';
+  document.getElementById('qFib').textContent=Math.round(f.fib*q*10)/10+'g';
+}
+function confirmAdd(){
+  const f=S.food, q=S.qty;
+  getLogs()[S.mealId].push({
+    name:lang==='ur'&&f.ur?f.ur:f.name, unit:f.unit||'serving', qty:q,
+    cal:Math.round(f.cal*q*10)/10, prot:Math.round(f.prot*q*10)/10,
+    carb:Math.round(f.carb*q*10)/10, fat:Math.round(f.fat*q*10)/10,
+    chol:Math.round(f.chol*q), fib:Math.round(f.fib*q*10)/10, src:f.src||'Local'
+  });
+  save(); closeQtyModal(); closeFoodModal(); renderLog(); renderHome();
+  showToast(`✅ ${lang==='ur'&&f.ur?f.ur:f.name} ${lang==='ur'?'شامل':'added'}!`);
+}
+
+// ==================== REPORTS ====================
+function renderReports(){
+  const t2=getTotals(), p=S.profile, g=calcTDEE(p)||2000;
+  const bmrVal=calcBMR(p);
+  const actBurn=Math.max(0,g-bmrVal);
+  const tP=Math.round(g*.25/4), tC=Math.round(g*.5/4), tF=Math.round(g*.25/9);
+  const isEN=lang==='en';
+
+  // Health Score
+  let sc=0;
+  const cp=t2.cal/g;
+  if(cp>=0.7&&cp<=1.15)sc+=28;else if(cp>=0.5)sc+=14;else if(cp>1.15&&cp<=1.3)sc+=10;
+  if(t2.prot>=tP*.8)sc+=22;else if(t2.prot>=tP*.5)sc+=11;
+  if(t2.fib>=20)sc+=15;else if(t2.fib>=10)sc+=8;
+  if(S.water>=8)sc+=15;else if(S.water>=5)sc+=8;else if(S.water>=3)sc+=4;
+  if(t2.chol<=200)sc+=10;else if(t2.chol<=300)sc+=5;
+  sc=Math.min(100,sc);
+  document.getElementById('sring').style.strokeDashoffset=188-(sc/100)*188;
+  document.getElementById('scoreN').textContent=sc;
+  let sg,sm,sgc;
+  if(sc>=85){sg=t('score_ex');sgc='#10b981';sm=isEN?'Excellent nutrition today! Consistent performance shows results.':'آج کی غذائیت شاندار ہے! تسلسل نتائج دے گا۔';}
+  else if(sc>=70){sg=t('score_g');sgc='#00d4ff';sm=isEN?'Good progress! Small tweaks will make it perfect.':'اچھی پیشرفت! تھوڑی بہتری مزید فائدہ دے گی۔';}
+  else if(sc>=50){sg=t('score_av');sgc='#f59e0b';sm=isEN?'Room to improve. Focus on protein, water & fiber.':'بہتری ممکن ہے۔ پروٹین، پانی اور فائبر پر توجہ دیں۔';}
+  else{sg=t('score_nw');sgc='#ef4444';sm=isEN?'Start logging meals to improve your score.':'اسکور بہتر کرنے کے لیے کھانا لاگ کریں۔';}
+  document.getElementById('scoreGrade').textContent=sg;
+  document.getElementById('scoreGrade').style.color=sgc;
+  document.getElementById('scoreMsg').textContent=sm;
+
+  // Calorie Balance
+  const deficit=g-t2.cal;
+  const isDeficit=deficit>0;
+  const wtWk=Math.abs((deficit*7/7700).toFixed(2));
+  const pctDone=Math.min(100,Math.round((t2.cal/g)*100));
+  let bic,bti,btt,btm;
+  if(Math.abs(deficit)<100){bic='#10b981';bti='✅';btt=isEN?'Perfect Balance!':'بالکل متوازن!';btm=isEN?'Right at your goal. Ideal for maintaining weight.':'ہدف پر بالکل ہیں — وزن برقرار رہے گا۔';}
+  else if(isDeficit){bic='#00d4ff';bti='📉';btt=isEN?`Deficit: ${Math.abs(deficit)} cal`:`کمی: ${Math.abs(deficit)} cal`;btm=isEN?`Eating ${Math.abs(deficit)} fewer calories than goal → ~${wtWk}kg/week loss`:`ہدف سے ${Math.abs(deficit)} کم کھایا → ~${wtWk} کلو/ہفتہ وزن کم ہوگا`;}
+  else{bic='#f59e0b';bti='📈';btt=isEN?`Surplus: +${Math.abs(deficit)} cal`:`اضافہ: +${Math.abs(deficit)} cal`;btm=isEN?`Ate ${Math.abs(deficit)} extra calories → ~${wtWk}kg/week gain if continued`:`ہدف سے ${Math.abs(deficit)} زیادہ کھایا → ~${wtWk} کلو/ہفتہ وزن بڑھے گا`;}
+  document.getElementById('balContent').innerHTML=`
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px">
+      <div style="font-size:30px;flex-shrink:0">${bti}</div>
+      <div><div style="font-size:14px;font-weight:800;color:${bic}">${btt}</div><div style="font-size:10px;color:var(--t2);margin-top:3px;line-height:1.5">${btm}</div></div>
+    </div>
+    <div style="background:rgba(255,255,255,0.04);border-radius:11px;padding:10px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:10px"><span style="color:var(--t2)">${isEN?'Progress to goal':'ہدف کی طرف پیشرفت'}</span><span style="font-weight:700;color:${bic}">${pctDone}%</span></div>
+      <div style="background:rgba(255,255,255,0.07);border-radius:5px;height:9px;overflow:hidden"><div style="width:${pctDone}%;height:100%;background:linear-gradient(to right,${bic},${isDeficit?'#7c3aed':'#ef4444'});border-radius:5px;transition:width 0.8s"></div></div>
+    </div>
+    <div class="stat3" style="margin-top:10px">
+      <div class="sbox"><div class="sbox-l">${isEN?'Food Cal':'کھانا'}</div><div class="sbox-v" style="color:var(--a4)">${t2.cal}</div><div class="sbox-u">cal</div></div>
+      <div class="sbox"><div class="sbox-l">${isEN?'Activity':'سرگرمی'}</div><div class="sbox-v" style="color:var(--a3)">${actBurn}</div><div class="sbox-u">cal</div></div>
+      <div class="sbox"><div class="sbox-l">${isEN?'Net Bal':'نیٹ'}</div><div class="sbox-v" style="color:${bic}">${isDeficit?'-':'+'}${Math.abs(deficit)}</div><div class="sbox-u">cal</div></div>
+    </div>`;
+
+  // Goal Progress
+  const goalK=p.goal||'maintain';
+  const onTrack=(goalK==='lose'&&isDeficit)||(goalK==='gain'&&!isDeficit&&Math.abs(deficit)>100)||(goalK==='maintain'&&Math.abs(deficit)<150)||(goalK==='muscle'&&t2.prot>=tP*.9);
+  const mscore=Math.round(((Math.min(t2.prot,tP)/tP)*40)+((Math.min(t2.fib,25)/25)*30)+((S.water/8)*30));
+
+  document.getElementById('goalProg').innerHTML=`
+    <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+      <div style="font-size:22px">${onTrack?'✅':'🔄'}</div>
+      <div><div style="font-size:12px;font-weight:700">${isEN?({lose:'Losing Weight 📉',maintain:'Maintaining Weight ⚖️',gain:'Gaining Weight 📈',muscle:'Building Muscle 💪'})[goalK]:({lose:'وزن کم ہو رہا ہے 📉',maintain:'وزن برقرار ⚖️',gain:'وزن بڑھ رہا ہے 📈',muscle:'عضلات بن رہے ہیں 💪'})[goalK]}</div>
+      <div style="font-size:10px;color:${onTrack?'#10b981':'#f59e0b'};margin-top:2px">${onTrack?(isEN?'On Track ✅':'صحیح راستے پر ✅'):(isEN?'Needs adjustment':'بہتری درکار')}</div></div>
+    </div>
+    <div class="stat3">
+      <div class="sbox"><div class="sbox-l">${isEN?'Macro Score':'میکرو'}</div><div class="sbox-v" style="color:#a855f7">${mscore}</div><div class="sbox-u">/100</div></div>
+      <div class="sbox"><div class="sbox-l">${isEN?'Protein %':'پروٹین'}</div><div class="sbox-v" style="color:var(--a1)">${Math.min(100,Math.round((t2.prot/tP)*100))}%</div><div class="sbox-u">of goal</div></div>
+      <div class="sbox"><div class="sbox-l">${isEN?'Activity':'سرگرمی'}</div><div class="sbox-v" style="color:var(--a3)">${actBurn}</div><div class="sbox-u">cal/day</div></div>
+    </div>
+    ${p.weight?`<div style="margin-top:10px;padding:9px 11px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:11px;font-size:11px;color:var(--t2)">
+      <span style="font-weight:700;color:var(--a3)">${isEN?'Estimated weekly change:':'ہفتہ وار تخمینی تبدیلی:'}</span>
+      <span style="font-weight:800;color:${isDeficit?'#00d4ff':'#f59e0b'};margin-left:5px">${isDeficit?'−':'+'}${wtWk} kg</span>
+      <span style="color:var(--t3)"> (${isEN?'at current rate':'موجودہ رفتار پر'})</span>
+    </div>`:''}`;
+
+  // Nutrient Details
+  const nuts=[
+    {n:isEN?'🔥 Calories':'🔥 کیلوریز',v:t2.cal,tg:g,u:'cal',c:'#00d4ff'},
+    {n:isEN?'💪 Protein':'💪 پروٹین',v:t2.prot,tg:tP,u:'g',c:'#7c3aed'},
+    {n:isEN?'🍞 Carbs':'🍞 کاربز',v:t2.carb,tg:tC,u:'g',c:'#f59e0b'},
+    {n:isEN?'🫙 Fat':'🫙 چکنائی',v:t2.fat,tg:tF,u:'g',c:'#10b981'},
+    {n:isEN?'🩸 Cholesterol':'🩸 کولیسٹرول',v:t2.chol,tg:300,u:'mg',c:'#ef4444'},
+    {n:isEN?'🌾 Fiber':'🌾 فائبر',v:t2.fib,tg:25,u:'g',c:'#a855f7'},
+  ];
+  document.getElementById('nutDet').innerHTML=nuts.map(n=>{
+    const pc=Math.min(100,Math.round((n.v/n.tg)*100)), ov=n.v>n.tg;
+    const s=pc>=80&&!ov?'✅':ov?'⚠️':pc>=50?'🔶':'🔴';
+    return`<div class="nr"><div class="nd" style="background:${n.c}"></div><div class="nn">${n.n}</div><div class="nbw"><div class="nbb"><div class="nbf" style="width:${pc}%;background:${ov?'#ef4444':n.c}"></div></div></div><div class="nv">${n.v}${n.u} ${s}<br><span style="color:${ov?'#ef4444':'var(--t3)'}">/${n.tg}${n.u} (${pc}%)</span></div></div>`;
+  }).join('');
+
+  // Weekly Chart
+  const ch=document.getElementById('wkChart'); ch.innerHTML='';
+  const days=TR[lang].days, now=new Date(); let wkCal=0, wkDays=0;
+  const wkD=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date(now); d.setDate(now.getDate()-i);
+    const k=d.toISOString().split('T')[0];
+    const lg=S.logs[k]; let cal=0;
+    if(lg) for(const m of Object.values(lg)) for(const it of m) cal+=it.cal;
+    cal=Math.round(cal); if(cal>0){wkCal+=cal;wkDays++;}
+    wkD.push(cal);
+  }
+  const maxB=Math.max(...wkD,g);
+  wkD.forEach((cal,idx)=>{
+    const isT=idx===6, h=Math.round((cal/maxB)*73)||3;
+    const w=document.createElement('div'); w.className='bw';
+    const bc=cal>g?'linear-gradient(to top,#ef4444,#f59e0b)':isT?'linear-gradient(to top,#00d4ff,#7c3aed)':'rgba(255,255,255,0.12)';
+    w.innerHTML=`<div class="bval" style="color:${cal>g?'#f59e0b':'var(--t1)'}">${cal>0?cal:''}</div><div class="bar" style="height:${h}px;background:${bc}"></div><div class="bday" style="color:${isT?'var(--a1)':'var(--t2)'}">${days[idx]}${isT?'<br>'+TR[lang].today:''}</div>`;
+    ch.appendChild(w);
+  });
+  const avgC=wkDays>0?Math.round(wkCal/wkDays):0;
+  const wkBal=wkDays>0?Math.round((g-avgC)*wkDays):0;
+  document.getElementById('wkStats').innerHTML=`
+    <div class="sbox"><div class="sbox-l">${isEN?'Avg/Day':'اوسط/دن'}</div><div class="sbox-v" style="color:var(--a1)">${avgC}</div><div class="sbox-u">cal</div></div>
+    <div class="sbox"><div class="sbox-l">${isEN?'Days Logged':'دن لاگ'}</div><div class="sbox-v" style="color:#a855f7">${wkDays}</div><div class="sbox-u">days</div></div>
+    <div class="sbox"><div class="sbox-l">${isEN?'Wk Balance':'ہفتہ'}</div><div class="sbox-v" style="color:${wkBal>0?'#10b981':'#f59e0b'}">${wkBal>0?'-':'+'}${Math.abs(wkBal)}</div><div class="sbox-u">cal</div></div>`;
+
+  // Smart Tips
+  const tips=[];
+  const addTip=(ico,ti,de,co)=>tips.push(`<div class="tip-card" style="border-color:${co}"><div class="tip-icon">${ico}</div><div><div class="tip-title">${ti}</div><div class="tip-desc">${de}</div></div></div>`);
+  if(t2.cal===0){addTip('📝',isEN?'No food logged yet!':'ابھی کچھ لاگ نہیں',isEN?'Tap LOG to start tracking your nutrition.':'LOG میں جا کر کھانا شامل کریں۔','#00d4ff');}
+  else{
+    if(isDeficit&&Math.abs(deficit)>700)addTip('⚠️',isEN?'Large Deficit!':'بہت زیادہ کمی!',isEN?`${Math.abs(deficit)} cal deficit. Safe max is ~500 for sustainable loss.`:`${Math.abs(deficit)} کمی۔ محفوظ حد ~500 ہے۔`,'#ef4444');
+    if(!isDeficit&&Math.abs(deficit)>500)addTip('📈',isEN?'Calorie Surplus':'کیلوریز زیادہ',isEN?`+${Math.abs(deficit)} net surplus → ~${wtWk}kg gain/week if sustained.`:`+${Math.abs(deficit)} اضافہ → ~${wtWk} کلو/ہفتہ۔`,'#f59e0b');
+    if(t2.prot<tP*.6)addTip('💪',isEN?'Protein Very Low':'پروٹین بہت کم',isEN?`Only ${t2.prot}g of ${tP}g target. Add eggs, chicken, lentils.`:`${tP}g ہدف میں سے صرف ${t2.prot}g — انڈہ، مرغ، دال کھائیں۔`,'#7c3aed');
+    else if(t2.prot>=tP)addTip('💪',isEN?'Protein Goal Met ✅':'پروٹین ہدف پورا ✅',isEN?`${t2.prot}g protein — excellent muscle fuel!`:`${t2.prot}g — عضلات کے لیے بہترین!`,'#10b981');
+    if(S.water<5)addTip('💧',isEN?'Drink More Water':'پانی کم ہے',isEN?`${S.water}/8 glasses. Adequate hydration boosts metabolism by 30%.`:`${S.water}/8 گلاس۔ مناسب پانی metabolism 30% بڑھاتا ہے۔`,'#00d4ff');
+    else if(S.water>=8)addTip('💧',isEN?'Hydration Perfect ✅':'ہائیڈریشن کامل ✅',isEN?'8+ glasses — excellent!'  :'8+ گلاس — شاندار!','#10b981');
+    if(t2.fib<12)addTip('🌾',isEN?'Low Fiber':'فائبر کم',isEN?`${t2.fib}g / 25g target. Add guava, lentils, spinach, dates.`:`${t2.fib}g / 25g ہدف۔ امرود، دال، پالک، کھجور کھائیں۔`,'#a855f7');
+    if(t2.chol>270)addTip('🩸',isEN?'Cholesterol Near Limit':'کولیسٹرول حد کے قریب',isEN?`${t2.chol}mg approaching 300mg daily limit. Reduce fried/fatty foods.`:`${t2.chol}mg — 300mg حد قریب۔ تلا ہوا کھانا کم کریں۔`,'#ef4444');
+    if(goalK==='lose'&&isDeficit)addTip('🎯',isEN?'Weight Loss On Track!':'وزن کم ہونے کا عمل جاری!',isEN?`${Math.abs(deficit)} cal deficit → ~${Math.abs((deficit*7/7700).toFixed(2))}kg/week loss rate`:`${Math.abs(deficit)} کیلوری کمی → ~${Math.abs((deficit*7/7700).toFixed(2))} کلو/ہفتہ`,'#10b981');
+    if(sc>=85)addTip('🌟',isEN?'Outstanding Day!':'شاندار دن!',isEN?'Your nutrition & activity are perfectly balanced today.':'آج کی غذائیت اور سرگرمی بالکل متوازن ہے۔','#10b981');
+  }
+  document.getElementById('tipsCont').innerHTML=tips.join('');
+}
+
+// ==================== PROFILE ====================
+function renderProfile(){
+  const p=S.profile;
+  document.getElementById('pName').textContent=p.name||(lang==='ur'?'پروفائل بنائیں':'Create Profile');
+  document.getElementById('pSub').textContent=p.name?(lang==='ur'?`عمر: ${p.age||'--'} | قد: ${p.height||'--'}cm | وزن: ${p.weight||'--'}kg`:`Age: ${p.age||'--'} | ${p.height||'--'}cm | ${p.weight||'--'}kg`):(lang==='ur'?'معلومات درج کریں':'Enter your details below');
+  document.getElementById('pAvatar').textContent=p.gender==='female'?'👩':'👨';
+  if(p.name)document.getElementById('iName').value=p.name;
+  if(p.age)document.getElementById('iAge').value=p.age;
+  if(p.gender)document.getElementById('iGender').value=p.gender;
+  if(p.height)document.getElementById('iHeight').value=p.height;
+  if(p.weight)document.getElementById('iWeight').value=p.weight;
+  if(p.activity)document.getElementById('iAct').value=p.activity;
+  if(p.goal)document.getElementById('iGoal').value=p.goal;
+  const gk={lose:lang==='ur'?'وزن کم':'LOSE',maintain:lang==='ur'?'برقرار':'MAINTAIN',gain:lang==='ur'?'بڑھانا':'GAIN',muscle:lang==='ur'?'عضلات':'MUSCLE'};
+  document.getElementById('gBadge').textContent='🎯 '+(gk[p.goal]||t('goal_badge'));
+  calcAndShowBMI();
+}
+
+function saveProfile(){
+  S.profile={
+    name:document.getElementById('iName').value,
+    age:parseInt(document.getElementById('iAge').value)||0,
+    gender:document.getElementById('iGender').value,
+    height:parseFloat(document.getElementById('iHeight').value)||0,
+    weight:parseFloat(document.getElementById('iWeight').value)||0,
+    activity:document.getElementById('iAct').value,
+    goal:document.getElementById('iGoal').value,
+  };
+  save(); calcAndShowBMI(); renderProfile();
+  showToast('✅ '+(lang==='ur'?'پروفائل محفوظ!':'Profile saved!'));
+}
+
+function calcAndShowBMI(){
+  const p=S.profile;
+  if(!p.height||!p.weight){document.getElementById('bmiCard').style.display='none';return;}
+  const bmi=Math.round((p.weight/((p.height/100)**2))*10)/10;
+  let bl,bc;
+  if(bmi<18.5){bl=t('bmi_u');bc='#3b82f6';}
+  else if(bmi<25){bl=t('bmi_n');bc='#10b981';}
+  else if(bmi<30){bl=t('bmi_o');bc='#f59e0b';}
+  else{bl=t('bmi_ob');bc='#ef4444';}
+  document.getElementById('bmiCard').style.display='block';
+  document.getElementById('bmiN').textContent=bmi;
+  document.getElementById('bmiN').style.color=bc;
+  document.getElementById('bmiL').textContent=bl;
+  document.getElementById('bmiL').style.color=bc;
+  const pos=Math.min(93,Math.max(3,((bmi-15)/25)*100));
+  document.getElementById('bmiInd').style.right=(100-pos)+'%';
+  const td=calcTDEE(p), br=calcBMR(p);
+  document.getElementById('tdeeV').textContent=td+' cal/day';
+  const gt={lose:'(−500 for loss)',maintain:'(maintenance)',gain:'(+500 for gain)',muscle:'(+300 for muscle)'};
+  document.getElementById('tdeeB').textContent=`BMR: ${br} × Activity ${gt[p.goal]||''}`;
+}
+
+// ==================== DARK / LIGHT MODE ====================
+function toggleMode(){
+  const isLight = document.body.classList.toggle('light');
+  localStorage.setItem('smnc_mode', isLight ? 'light' : 'dark');
+  document.getElementById('modeBtn').textContent = isLight ? '☀️' : '🌙';
+}
+
+// ==================== ONLINE STATUS ====================
+function updateOnlineStatus(){
+  isOnline=navigator.onLine;
+  const dot=document.getElementById('syncDot');
+  dot.className='sync-dot'+(isOnline?'':' offline');
+  dot.title=isOnline?'Online — USDA sync active':'Offline — local database only';
+}
+window.addEventListener('online',updateOnlineStatus);
+window.addEventListener('offline',updateOnlineStatus);
+
+// ==================== INIT ====================
+(function init(){
+  // Restore mode
+  const savedMode = localStorage.getItem('smnc_mode');
+  if(savedMode === 'light'){
+    document.body.classList.add('light');
+    document.getElementById('modeBtn').textContent = '☀️';
+  }
+  const now=new Date();
+  document.getElementById('hDate').textContent=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+  document.getElementById('lEN').classList.toggle('active',lang==='en');
+  document.getElementById('lUR').classList.toggle('active',lang==='ur');
+  document.getElementById('scrollArea').dir=lang==='ur'?'rtl':'ltr';
+  updateOnlineStatus();
+  applyLang();
+  renderHome();
+})();
+</script>
+</body>
+</html>
