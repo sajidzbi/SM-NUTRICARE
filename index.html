@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SM NutriCare">
+<meta name="theme-color" content="#00d4ff">
+<meta name="description" content="Pakistani Nutrition Tracker by Dr. Sajid Mahmood, Hazara University">
 <title>SM NutriCare</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -420,6 +424,7 @@ body::after{content:'';position:fixed;bottom:0;left:0;width:280px;height:280px;b
       </select>
     </div>
     <button class="sbtn2" onclick="saveProfile()" id="saveProfBtn">💾 Save Profile</button>
+    <button onclick="openResetConfirm()" style="width:100%;padding:11px;border-radius:14px;border:1.5px solid var(--a5);background:rgba(239,68,68,0.06);color:var(--a5);font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;font-family:'Inter',sans-serif">🔄 Reset Custom Foods to Default</button>
   </div>
   <div class="card" id="bmiCard" style="display:none">
     <div class="ct" id="ct-bmi">📊 BMI & CALORIE GOAL</div>
@@ -450,7 +455,7 @@ body::after{content:'';position:fixed;bottom:0;left:0;width:280px;height:280px;b
     <div class="dev-t">Nutrition Researcher & App Developer</div>
     <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">🏛️</span><div><div class="clbl">UNIVERSITY</div><div class="cval">Hazara University Mansehra</div></div></div>
     <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">📚</span><div><div class="clbl">DEPARTMENT</div><div class="cval">Dept. of Islamic & Religious Studies</div><div style="font-size:10px;color:var(--t2);margin-top:2px">Hazara University Mansehra</div></div></div>
-    <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">📧</span><div><div class="clbl">EMAIL</div><div class="cval">sajidzbi@gmail.com</div></div></div>
+    <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">📧</span><div><div class="clbl">EMAIL</div><div class="cval"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7407151e1d100e161d341319151d185a171b19">[email&#160;protected]</a></div></div></div>
     <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">💬</span><div><div class="clbl">WHATSAPP</div><div class="cval">0300-9080730</div></div></div>
     <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">🌐</span><div><div class="clbl">APPLICATION</div><div class="cval">SM NutriCare v3.0</div></div></div>
   </div>
@@ -495,6 +500,10 @@ body::after{content:'';position:fixed;bottom:0;left:0;width:280px;height:280px;b
       <button class="sbtn" id="srchBtn" onclick="searchUSDA()">Search</button>
     </div>
     <div class="catrow" id="catRow"></div>
+    <!-- Manual Entry Button -->
+    <button onclick="openManualEntry()" style="width:100%;padding:10px;border-radius:12px;border:1.5px dashed var(--a1);background:rgba(0,212,255,0.06);color:var(--a1);cursor:pointer;margin-bottom:8px;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px">
+      ✏️ <span id="manualBtnTxt">Add Custom Food (Manual Entry)</span>
+    </button>
     <div id="foodList"></div>
     <button onclick="closeFoodModal()" style="width:100%;padding:10px;border-radius:12px;border:1px solid var(--gb);background:none;color:var(--t2);cursor:pointer;margin-top:6px;font-size:12px;font-family:'Inter',sans-serif">Close</button>
   </div>
@@ -526,9 +535,177 @@ body::after{content:'';position:fixed;bottom:0;left:0;width:280px;height:280px;b
   </div>
 </div>
 
+<!-- MANUAL ENTRY / EDIT MODAL -->
+<div class="qmo" id="manualModal">
+  <div class="qcard" style="max-height:90vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div class="qfn" id="manualTitle" style="margin:0">✏️ Custom Food</div>
+      <button onclick="closeManualModal()" style="background:none;border:none;color:var(--t2);font-size:20px;cursor:pointer">×</button>
+    </div>
+    <div style="margin-bottom:8px">
+      <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">FOOD NAME *</label>
+      <div style="display:flex;gap:6px">
+        <input id="mName" class="sfield" type="text" placeholder="e.g. Aloo Gosht" style="flex:1;margin:0">
+        <button id="mFetchBtn" onclick="fetchManualNutrition()" style="background:linear-gradient(135deg,var(--a3),#0d9668);border:none;border-radius:10px;color:white;padding:0 10px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif">🔍 Auto-Fill</button>
+      </div>
+      <div id="mFetchStatus" style="font-size:9px;color:var(--a3);margin-top:3px;height:12px"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px">
+      <div>
+        <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">🔥 CALORIES *</label>
+        <input id="mCal" class="sfield" type="number" min="0" placeholder="0" style="margin:0">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">💪 PROTEIN (g)</label>
+        <input id="mProt" class="sfield" type="number" min="0" step="0.1" placeholder="0" style="margin:0">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">🍞 CARBS (g)</label>
+        <input id="mCarb" class="sfield" type="number" min="0" step="0.1" placeholder="0" style="margin:0">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">🫙 FAT (g)</label>
+        <input id="mFat" class="sfield" type="number" min="0" step="0.1" placeholder="0" style="margin:0">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">🩸 CHOLESTEROL (mg)</label>
+        <input id="mChol" class="sfield" type="number" min="0" placeholder="0" style="margin:0">
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">🌾 FIBER (g)</label>
+        <input id="mFib" class="sfield" type="number" min="0" step="0.1" placeholder="0" style="margin:0">
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">📦 UNIT / SERVING</label>
+      <input id="mUnit" class="sfield" type="text" placeholder="e.g. 1 plate, 100g, 1 cup" style="margin:0">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px">
+      <div>
+        <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">📊 QUANTITY</label>
+        <div style="display:flex;align-items:center;gap:6px">
+          <button onclick="chMQ(-0.5)" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--gb);background:var(--gl);color:var(--t1);font-size:16px;cursor:pointer;flex-shrink:0">−</button>
+          <input id="mQty" class="sfield" type="number" min="0.5" step="0.5" value="1" style="margin:0;text-align:center;flex:1">
+          <button onclick="chMQ(0.5)" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--gb);background:var(--gl);color:var(--t1);font-size:16px;cursor:pointer;flex-shrink:0">+</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:10px;color:var(--t2);font-weight:700;display:block;margin-bottom:3px">💾 SAVE TO MY FOODS</label>
+        <label style="display:flex;align-items:center;gap:6px;padding-top:6px;cursor:pointer">
+          <input type="checkbox" id="mSave" style="width:16px;height:16px;accent-color:var(--a1)">
+          <span style="font-size:11px;color:var(--t2)">Save for reuse</span>
+        </label>
+      </div>
+    </div>
+    <!-- Live Preview -->
+    <div style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);border-radius:12px;padding:10px;margin-bottom:12px" id="mPreview">
+      <div style="font-size:9px;color:var(--a1);font-weight:700;margin-bottom:5px">PREVIEW (per quantity)</div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;flex-wrap:wrap;gap:4px">
+        <span>🔥 <span id="mpCal">0</span> cal</span>
+        <span>💪 <span id="mpProt">0</span>g</span>
+        <span>🍞 <span id="mpCarb">0</span>g</span>
+        <span>🫙 <span id="mpFat">0</span>g</span>
+        <span>🩸 <span id="mpChol">0</span>mg</span>
+        <span>🌾 <span id="mpFib">0</span>g</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="qcan" onclick="closeManualModal()">Cancel</button>
+      <button class="qadd" onclick="confirmManualAdd()">✅ Add to Log</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM RESET MODAL -->
+<div class="qmo" id="confirmModal">
+  <div class="qcard" style="max-width:300px;text-align:center">
+    <div style="font-size:32px;margin-bottom:10px">⚠️</div>
+    <div class="qfn" id="confirmTitle" style="margin-bottom:8px">Reset to Default?</div>
+    <div style="font-size:11px;color:var(--t2);margin-bottom:18px;line-height:1.6" id="confirmMsg">This will remove all your custom foods and restore original data. This cannot be undone.</div>
+    <div style="display:flex;gap:8px">
+      <button class="qcan" onclick="closeConfirmModal()">Cancel</button>
+      <button style="flex:2;padding:10px;border-radius:12px;border:none;background:var(--a5);color:white;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif" onclick="doReset()">Yes, Reset</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<!-- PWA MANIFEST inline -->
+<script>
+// Inject PWA manifest dynamically
+const manifest = {
+  name: "SM NutriCare",
+  short_name: "NutriCare",
+  description: "Pakistani Nutrition Tracker by Dr. Sajid Mahmood",
+  start_url: "./",
+  display: "standalone",
+  background_color: "#0a0a0f",
+  theme_color: "#00d4ff",
+  orientation: "portrait",
+  icons: [
+    { src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%230a0a0f'/><text y='130' x='20' font-size='140'>🌿</text></svg>", sizes: "192x192", type: "image/svg+xml" },
+    { src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%230a0a0f'/><text y='370' x='40' font-size='380'>🌿</text></svg>", sizes: "512x512", type: "image/svg+xml" }
+  ]
+};
+const mblob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+const murl = URL.createObjectURL(mblob);
+const ml = document.createElement('link');
+ml.rel = 'manifest'; ml.href = murl;
+document.head.appendChild(ml);
+
+// Register Service Worker for PWA
+if('serviceWorker' in navigator){
+  const swCode = `
+    const CACHE = 'smnc-v1';
+    self.addEventListener('install', e => {
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(clients.claim());
+    });
+    self.addEventListener('fetch', e => {
+      if(e.request.method !== 'GET') return;
+      e.respondWith(
+        caches.match(e.request).then(cached => {
+          const fetched = fetch(e.request).then(resp => {
+            if(resp && resp.status === 200){
+              const clone = resp.clone();
+              caches.open(CACHE).then(c => c.put(e.request, clone));
+            }
+            return resp;
+          }).catch(() => cached);
+          return cached || fetched;
+        })
+      );
+    });
+  `;
+  const swBlob = new Blob([swCode], {type:'application/javascript'});
+  const swUrl = URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swUrl, {scope:'./'}).catch(()=>{});
+}
+
+// PWA Install prompt
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallBanner();
+});
+
+function showInstallBanner(){
+  if(document.getElementById('installBanner')) return;
+  const b = document.createElement('div');
+  b.id = 'installBanner';
+  b.style.cssText = 'position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#00d4ff,#7c3aed);color:white;padding:10px 18px;border-radius:14px;font-size:12px;font-weight:700;z-index:999;cursor:pointer;box-shadow:0 4px 20px rgba(0,212,255,0.4);display:flex;align-items:center;gap:8px;white-space:nowrap;font-family:Inter,sans-serif;direction:ltr';
+  b.innerHTML = '📲 Install SM NutriCare App';
+  b.onclick = () => { if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; b.remove(); }); } };
+  document.body.appendChild(b);
+  setTimeout(()=>{ if(b.parentNode) b.style.opacity='0'; setTimeout(()=>b.remove(),500); }, 8000);
+}
+</script>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ==================== LANGUAGE ====================
 const TR = {
   en: {
@@ -621,6 +798,7 @@ const S = {
   logs: JSON.parse(localStorage.getItem('smnc_l') || '{}'),
   water: parseInt(localStorage.getItem('smnc_w') || '0'),
   cache: JSON.parse(localStorage.getItem('smnc_cache') || '{}'),
+  customFoods: JSON.parse(localStorage.getItem('smnc_cf') || '[]'),
   mealId: null, food: null, qty: 1, cat: 'all',
 };
 let isOnline = navigator.onLine;
@@ -630,6 +808,7 @@ function save(){
   localStorage.setItem('smnc_l', JSON.stringify(S.logs));
   localStorage.setItem('smnc_w', S.water);
 }
+function saveCustomFoods(){ localStorage.setItem('smnc_cf', JSON.stringify(S.customFoods)); }
 function saveCache(){ localStorage.setItem('smnc_cache', JSON.stringify(S.cache)); }
 
 // ==================== NUTRITION DATABASE ====================
@@ -881,9 +1060,10 @@ function closeFoodModal(){ document.getElementById('foodOverlay').classList.remo
 function buildCats(){
   const c=document.getElementById('catRow'); c.innerHTML='';
   const cl=CATS[lang]||CATS.en;
-  ['all','staples','protein','dairy','dishes','vegetables','fruits','dryfruits','beverages','sweets'].forEach(cat=>{
+  ['all','staples','protein','dairy','dishes','vegetables','fruits','dryfruits','beverages','sweets','custom'].forEach(cat=>{
+    if(cat==='custom'&&S.customFoods.length===0) return;
     const b=document.createElement('button'); b.className='catbtn'+(S.cat===cat?' active':'');
-    b.textContent=cl[cat]||cat;
+    b.textContent=cat==='custom'?`⭐ ${lang==='ur'?'میری غذائیں':'My Foods'}(${S.customFoods.length})`:cl[cat]||cat;
     b.onclick=()=>{S.cat=cat;buildCats();filterLocal();};
     c.appendChild(b);
   });
@@ -924,13 +1104,34 @@ async function searchUSDA(){
 
 function showLocalFoods(foods){
   const c=document.getElementById('foodList'); c.innerHTML='';
-  if(!foods.length){ c.innerHTML=`<div class="loading-item">${lang==='ur'?'کوئی نتیجہ نہیں':'No results found'}</div>`; return; }
+  // Show custom foods at top if any and cat is 'all' or 'custom'
+  if((S.cat==='all'||S.cat==='custom') && S.customFoods.length>0){
+    const div=document.createElement('div');
+    div.innerHTML=`<div style="font-size:9px;color:var(--a4);font-weight:700;margin-bottom:5px;letter-spacing:0.5px">⭐ MY CUSTOM FOODS</div>`;
+    S.customFoods.forEach((food,idx)=>{
+      const item=document.createElement('div');
+      item.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:10px;background:rgba(245,158,11,0.06);border-radius:12px;margin-bottom:4px;border:1px solid rgba(245,158,11,0.15);cursor:pointer';
+      item.innerHTML=`<div style="flex:1" onclick="openQtyModal(S.customFoods[${idx}])"><div class="fln">${food.name}</div><div class="fli-sub">${food.unit||'serving'} · P:${food.prot}g C:${food.carb}g F:${food.fat}g<br><span class="src-tag" style="background:rgba(245,158,11,0.15);color:var(--a4)">⭐ Custom</span></div></div>
+      <div style="display:flex;gap:4px;flex-shrink:0">
+        <button onclick="editCustomFood(${idx})" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);border-radius:7px;color:var(--a1);padding:4px 7px;font-size:10px;cursor:pointer;font-family:'Inter',sans-serif">✏️</button>
+        <button onclick="deleteCustomFood(${idx})" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:7px;color:var(--a5);padding:4px 7px;font-size:10px;cursor:pointer;font-family:'Inter',sans-serif">🗑️</button>
+        <div class="flcal" style="margin-left:4px;line-height:2">${food.cal}</div>
+      </div>`;
+      div.appendChild(item);
+    });
+    c.appendChild(div);
+  }
+  if(!foods.length && S.cat!=='custom'){
+    c.innerHTML+='<div class="loading-item">'+(lang==='ur'?'کوئی نتیجہ نہیں':'No results found')+'</div>';
+    return;
+  }
   foods.slice(0,30).forEach(food=>{
     const name=lang==='ur'&&food.ur?food.ur:food.name;
     const sub=lang==='ur'?food.name:food.ur;
     const item=document.createElement('div'); item.className='fli';
-    item.innerHTML=`<div><div class="fln">${name}</div><div class="fli-sub">${sub} · P:${food.prot}g C:${food.carb}g F:${food.fat}g<br><span class="src-tag">📡 ${food.src||'Local'}</span></div></div><div class="flcal">${food.cal} cal</div>`;
-    item.onclick=()=>openQtyModal(food);
+    item.innerHTML=`<div style="flex:1" onclick="openQtyModal(${JSON.stringify(food).replace(/"/g,'&quot;')})"><div class="fln">${name}</div><div class="fli-sub">${sub?sub+' · ':''}P:${food.prot}g C:${food.carb}g F:${food.fat}g<br><span class="src-tag">📡 ${food.src||'Local'}</span></div></div><div class="flcal">${food.cal} cal</div>`;
+    // clicking the row opens QtyModal
+    item.querySelector('[onclick]').style.cursor='pointer';
     c.appendChild(item);
   });
   if(foods.length>30){ const more=document.createElement('div'); more.className='loading-item'; more.textContent=`+${foods.length-30} more — refine search`; c.appendChild(more); }
@@ -938,6 +1139,7 @@ function showLocalFoods(foods){
 
 // ==================== QTY MODAL ====================
 function openQtyModal(food){
+  if(typeof food === 'string') food = JSON.parse(food);
   S.food=food; S.qty=1;
   document.getElementById('qName').textContent=lang==='ur'&&food.ur?food.ur:food.name;
   document.getElementById('qUnit').textContent='Per: '+(food.unit||'1 serving (avg)');
@@ -1156,6 +1358,161 @@ function calcAndShowBMI(){
   document.getElementById('tdeeV').textContent=td+' cal/day';
   const gt={lose:'(−500 for loss)',maintain:'(maintenance)',gain:'(+500 for gain)',muscle:'(+300 for muscle)'};
   document.getElementById('tdeeB').textContent=`BMR: ${br} × Activity ${gt[p.goal]||''}`;
+}
+
+// ==================== MANUAL ENTRY ====================
+let editingCustomIdx = -1;
+
+function openManualEntry(){
+  editingCustomIdx = -1;
+  document.getElementById('manualTitle').textContent = '✏️ '+(lang==='ur'?'کسٹم غذا شامل کریں':'Add Custom Food');
+  ['mName','mCal','mProt','mCarb','mFat','mChol','mFib','mUnit'].forEach(id=>{
+    const e=document.getElementById(id); if(e) e.value='';
+  });
+  document.getElementById('mQty').value='1';
+  document.getElementById('mSave').checked=true;
+  document.getElementById('mFetchStatus').textContent='';
+  updateManualPreview();
+  document.getElementById('manualModal').classList.add('open');
+}
+
+function editCustomFood(idx){
+  editingCustomIdx = idx;
+  const f = S.customFoods[idx];
+  document.getElementById('manualTitle').textContent = '✏️ Edit: '+f.name;
+  document.getElementById('mName').value = f.name||'';
+  document.getElementById('mCal').value = f.cal||0;
+  document.getElementById('mProt').value = f.prot||0;
+  document.getElementById('mCarb').value = f.carb||0;
+  document.getElementById('mFat').value = f.fat||0;
+  document.getElementById('mChol').value = f.chol||0;
+  document.getElementById('mFib').value = f.fib||0;
+  document.getElementById('mUnit').value = f.unit||'';
+  document.getElementById('mQty').value = 1;
+  document.getElementById('mSave').checked = true;
+  document.getElementById('mFetchStatus').textContent='';
+  updateManualPreview();
+  document.getElementById('manualModal').classList.add('open');
+}
+
+function deleteCustomFood(idx){
+  S.customFoods.splice(idx,1);
+  saveCustomFoods();
+  buildCats();
+  showLocalFoods(LOCAL_DB);
+  showToast('🗑️ '+(lang==='ur'?'حذف ہو گئی':'Custom food deleted'));
+}
+
+function closeManualModal(){ document.getElementById('manualModal').classList.remove('open'); }
+
+function chMQ(d){
+  const e=document.getElementById('mQty');
+  e.value=Math.max(0.5,Math.round((parseFloat(e.value||1)+d)*10)/10);
+  updateManualPreview();
+}
+
+function updateManualPreview(){
+  const q=parseFloat(document.getElementById('mQty').value)||1;
+  const cal=parseFloat(document.getElementById('mCal').value)||0;
+  const prot=parseFloat(document.getElementById('mProt').value)||0;
+  const carb=parseFloat(document.getElementById('mCarb').value)||0;
+  const fat=parseFloat(document.getElementById('mFat').value)||0;
+  const chol=parseFloat(document.getElementById('mChol').value)||0;
+  const fib=parseFloat(document.getElementById('mFib').value)||0;
+  document.getElementById('mpCal').textContent=Math.round(cal*q);
+  document.getElementById('mpProt').textContent=Math.round(prot*q*10)/10;
+  document.getElementById('mpCarb').textContent=Math.round(carb*q*10)/10;
+  document.getElementById('mpFat').textContent=Math.round(fat*q*10)/10;
+  document.getElementById('mpChol').textContent=Math.round(chol*q);
+  document.getElementById('mpFib').textContent=Math.round(fib*q*10)/10;
+}
+
+// Auto-fill from USDA
+async function fetchManualNutrition(){
+  const name=document.getElementById('mName').value.trim();
+  if(!name){ showToast(lang==='ur'?'پہلے نام لکھیں':'Enter food name first',true); return; }
+  if(!navigator.onLine){ showToast(lang==='ur'?'آف لائن ہیں':'Offline — enter manually',true); return; }
+  const btn=document.getElementById('mFetchBtn');
+  const status=document.getElementById('mFetchStatus');
+  btn.textContent='⏳'; btn.disabled=true;
+  status.textContent=lang==='ur'?'USDA سے ڈیٹا حاصل ہو رہا ہے...':'Fetching from USDA...';
+  const results=await fetchUSDANutrition(name);
+  btn.textContent='🔍 Auto-Fill'; btn.disabled=false;
+  if(results&&results.length){
+    const f=results[0];
+    document.getElementById('mCal').value=f.cal;
+    document.getElementById('mProt').value=f.prot;
+    document.getElementById('mCarb').value=f.carb;
+    document.getElementById('mFat').value=f.fat;
+    document.getElementById('mChol').value=f.chol;
+    document.getElementById('mFib').value=f.fib;
+    document.getElementById('mUnit').value=f.unit||'100g';
+    status.textContent='✅ '+(lang==='ur'?'USDA سے بھر دیا — تبدیل کریں اگر ضروری ہو':'Filled from USDA — edit if needed');
+    updateManualPreview();
+  } else {
+    status.textContent='⚠️ '+(lang==='ur'?'نہیں ملا — خود بھریں':'Not found — fill manually');
+  }
+}
+
+function confirmManualAdd(){
+  const name=document.getElementById('mName').value.trim();
+  if(!name){ showToast(lang==='ur'?'نام ضروری ہے':'Food name is required',true); return; }
+  const cal=parseFloat(document.getElementById('mCal').value)||0;
+  if(!cal){ showToast(lang==='ur'?'کیلوریز ضروری ہیں':'Calories are required',true); return; }
+  const q=parseFloat(document.getElementById('mQty').value)||1;
+  const prot=parseFloat(document.getElementById('mProt').value)||0;
+  const carb=parseFloat(document.getElementById('mCarb').value)||0;
+  const fat=parseFloat(document.getElementById('mFat').value)||0;
+  const chol=parseFloat(document.getElementById('mChol').value)||0;
+  const fib=parseFloat(document.getElementById('mFib').value)||0;
+  const unit=document.getElementById('mUnit').value||'serving';
+  const foodObj={
+    id:'custom_'+Date.now(), cat:'custom',
+    name, ur:name, cal, prot, carb, fat, chol, fib, sod:0, unit,
+    src:'Custom Entry'
+  };
+  // Save to custom foods if checked
+  if(document.getElementById('mSave').checked){
+    if(editingCustomIdx>=0){ S.customFoods[editingCustomIdx]=foodObj; }
+    else { S.customFoods.push(foodObj); }
+    saveCustomFoods();
+  }
+  // Add to log
+  getLogs()[S.mealId].push({
+    name, unit, qty:q,
+    cal:Math.round(cal*q*10)/10, prot:Math.round(prot*q*10)/10,
+    carb:Math.round(carb*q*10)/10, fat:Math.round(fat*q*10)/10,
+    chol:Math.round(chol*q), fib:Math.round(fib*q*10)/10,
+    src:'Custom Entry'
+  });
+  save();
+  closeManualModal();
+  closeFoodModal();
+  renderLog();
+  renderHome();
+  showToast('✅ '+name+' '+(lang==='ur'?'شامل ہو گئی':'added!'));
+}
+
+// Live preview on input change
+document.addEventListener('input', e=>{
+  if(['mCal','mProt','mCarb','mFat','mChol','mFib','mQty'].includes(e.target?.id)){
+    updateManualPreview();
+  }
+});
+
+// ==================== RESET TO DEFAULT ====================
+function openResetConfirm(){
+  document.getElementById('confirmTitle').textContent=lang==='ur'?'ڈیفالٹ پر واپس جائیں؟':'Reset to Default?';
+  document.getElementById('confirmMsg').textContent=lang==='ur'?'تمام کسٹم غذائیں حذف ہو جائیں گی۔ یہ عمل واپس نہیں ہو سکتا۔':'All custom foods will be deleted and data restored to original. This cannot be undone.';
+  document.getElementById('confirmModal').classList.add('open');
+}
+function closeConfirmModal(){ document.getElementById('confirmModal').classList.remove('open'); }
+function doReset(){
+  S.customFoods=[];
+  saveCustomFoods();
+  closeConfirmModal();
+  showToast('✅ '+(lang==='ur'?'ڈیفالٹ پر واپس آ گیا':'Reset to default complete'));
+  if(document.getElementById('pg-log').classList.contains('active')) renderLog();
 }
 
 // ==================== DARK / LIGHT MODE ====================
