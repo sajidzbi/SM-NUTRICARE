@@ -441,11 +441,14 @@ body::after{content:'';position:fixed;bottom:0;left:0;width:280px;height:280px;b
 
 <!-- ABOUT -->
 <div class="pg" id="pg-about" dir="ltr" style="direction:ltr">
-  <div style="text-align:center;padding:16px 0 12px">
-    <div class="about-logo-big">🌿</div>
-    <div style="font-size:22px;font-weight:900;letter-spacing:-0.5px"><span style="color:var(--a1)">SM</span> NutriCare</div>
-    <div style="font-size:10px;color:var(--t2);margin-top:3px">Version 3.0 · Scientific Nutrition Tracker</div>
-    <div style="font-size:12px;color:var(--t2);margin-top:8px;line-height:1.6" id="about-tag">Your intelligent Pakistani food nutrition companion</div>
+  <div style="text-align:center;padding:24px 0 16px">
+    <div style="font-size:42px;font-weight:900;letter-spacing:-1px;line-height:1">
+      <span style="background:linear-gradient(135deg,#00d4ff,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">SM</span><span style="color:var(--t1)"> NutriCare</span>
+    </div>
+    <div style="font-size:11px;color:var(--a1);font-weight:700;letter-spacing:3px;margin-top:6px;text-transform:uppercase">Scientific Nutrition Tracker</div>
+    <div style="width:60px;height:2px;background:linear-gradient(to right,var(--a1),var(--a2));margin:10px auto 8px;border-radius:2px"></div>
+    <div style="font-size:11px;color:var(--t2);margin-top:4px;line-height:1.6" id="about-tag">Your intelligent Pakistani food nutrition companion</div>
+    <div style="font-size:10px;color:var(--t3);margin-top:4px">Version 3.0 · 2026</div>
   </div>
 
   <div class="dev-card" dir="ltr" style="direction:ltr">
@@ -455,7 +458,7 @@ body::after{content:'';position:fixed;bottom:0;left:0;width:280px;height:280px;b
     <div class="dev-t">Nutrition Researcher & App Developer</div>
     <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">🏛️</span><div><div class="clbl">UNIVERSITY</div><div class="cval">Hazara University Mansehra</div></div></div>
     <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">📚</span><div><div class="clbl">DEPARTMENT</div><div class="cval">Dept. of Islamic & Religious Studies</div><div style="font-size:10px;color:var(--t2);margin-top:2px">Hazara University Mansehra</div></div></div>
-    <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">📧</span><div><div class="clbl">EMAIL</div><div class="cval">sajidzbi@gmail.com</div></div></div>
+    <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">📧</span><div><div class="clbl">EMAIL</div><div class="cval" id="devEmail1">sajidzbi&#64;gmail&#46;com</div></div></div>
     <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">💬</span><div><div class="clbl">WHATSAPP</div><div class="cval">0300-9080730</div></div></div>
     <div class="citem" dir="ltr" style="direction:ltr"><span class="cico">🌐</span><div><div class="clbl">APPLICATION</div><div class="cval">SM NutriCare v3.0</div></div></div>
   </div>
@@ -475,7 +478,7 @@ body::after{content:'';position:fixed;bottom:0;left:0;width:280px;height:280px;b
     <div class="feat-row"><span class="feat-ico">🌐</span><div><div class="feat-t" id="f6t">Bilingual (EN / اردو)</div><div class="feat-d" id="f6d">Full Urdu & English support. Header and footer always remain in English. Content switches language</div></div></div>
     <div class="feat-row"><span class="feat-ico">💧</span><div><div class="feat-t">Water Intake Tracker</div><div class="feat-d">Track daily water intake (up to 8 glasses). Tap each glass to log. Included in health score</div></div></div>
     <div class="feat-row"><span class="feat-ico">📐</span><div><div class="feat-t">BMI Calculator</div><div class="feat-d">Auto-calculates BMI from your profile. Visual indicator with Underweight/Normal/Overweight/Obese scale</div></div></div>
-    <div class="data-src"><strong>📡 Data Source:</strong> USDA FoodData Central (fdc.nal.usda.gov) — Free US government API, CC0 licensed, science-verified, updated quarterly.<br><strong>🔢 Calorie Formula:</strong> BMR (Mifflin-St Jeor) × Activity Level (1.2–1.9) = TDEE. Accounts for age, gender, height & weight.<br><strong>📧 Contact:</strong> sajidzbi@gmail.com · 💬 0300-9080730</div>
+    <div class="data-src"><strong>📡 Data Source:</strong> USDA FoodData Central (fdc.nal.usda.gov) — Free US government API, CC0 licensed, science-verified, updated quarterly.<br><strong>🔢 Calorie Formula:</strong> BMR (Mifflin-St Jeor) × Activity Level (1.2–1.9) = TDEE. Accounts for age, gender, height &amp; weight.<br><strong>📧 Contact:</strong> sajidzbi&#64;gmail&#46;com · 💬 0300-9080730</div>
   </div>
 
   <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:var(--t3);direction:ltr">
@@ -646,33 +649,14 @@ function generateIcon(size){
   const canvas = document.createElement('canvas');
   canvas.width = size; canvas.height = size;
   const ctx = canvas.getContext('2d');
-  // Background gradient
-  const grad = ctx.createLinearGradient(0, 0, size, size);
-  grad.addColorStop(0, '#0a0a1f');
-  grad.addColorStop(1, '#1a0a2e');
-  ctx.fillStyle = grad;
-  const r = size * 0.2;
-  ctx.beginPath();
-  ctx.moveTo(r, 0); ctx.lineTo(size-r, 0);
-  ctx.quadraticCurveTo(size, 0, size, r);
-  ctx.lineTo(size, size-r);
-  ctx.quadraticCurveTo(size, size, size-r, size);
-  ctx.lineTo(r, size); ctx.quadraticCurveTo(0, size, 0, size-r);
-  ctx.lineTo(0, r); ctx.quadraticCurveTo(0, 0, r, 0);
-  ctx.closePath(); ctx.fill();
-  // Accent ring
-  ctx.strokeStyle = '#00d4ff'; ctx.lineWidth = size * 0.04;
-  ctx.beginPath();
-  ctx.arc(size/2, size/2, size*0.38, 0, Math.PI*2);
-  ctx.stroke();
-  // Leaf emoji
-  ctx.font = `${size*0.45}px serif`;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('🌿', size/2, size/2);
-  // SM text
-  ctx.font = `bold ${size*0.12}px Inter,sans-serif`;
-  ctx.fillStyle = '#00d4ff';
-  ctx.fillText('SM', size/2, size*0.82);
+  // Plain dark background
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, size, size);
+  // Only leaf emoji — centered, large
+  ctx.font = `${size * 0.72}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🌿', size / 2, size / 2);
   return canvas.toDataURL('image/png');
 }
 
@@ -762,7 +746,7 @@ function showInstallBanner(){
 }
 </script>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ==================== LANGUAGE ====================
 const TR = {
   en: {
@@ -871,63 +855,125 @@ function saveCache(){ localStorage.setItem('smnc_cache', JSON.stringify(S.cache)
 // ==================== NUTRITION DATABASE ====================
 // Verified Pakistani food database (based on USDA SR Legacy & published studies)
 const LOCAL_DB = [
-  // Staples
-  {id:'roti',cat:'staples',name:'Roti (Chapati)',ur:'روٹی',cal:80,prot:2.7,carb:16,fat:0.4,chol:0,fib:1.2,sod:1,src:'USDA SR Legacy'},
-  {id:'rice',cat:'staples',name:'Cooked Rice',ur:'چاول (پکے)',cal:206,prot:4.3,carb:45,fat:0.4,chol:0,fib:0.6,sod:1,src:'USDA #20444'},
-  {id:'paratha',cat:'staples',name:'Paratha',ur:'پراٹھہ',cal:260,prot:5,carb:33,fat:12,chol:0,fib:2,sod:280,src:'USDA Branded'},
-  {id:'naan',cat:'staples',name:'Naan Bread',ur:'نان',cal:262,prot:8.7,carb:45,fat:5.1,chol:0,fib:1.6,sod:536,src:'USDA #18261'},
-  // Protein
-  {id:'chicken_gr',cat:'protein',name:'Chicken Grilled',ur:'مرغ گرل',cal:165,prot:31,carb:0,fat:3.6,chol:85,fib:0,sod:74,src:'USDA #05064'},
-  {id:'beef',cat:'protein',name:'Beef Cooked',ur:'گوشت بیف',cal:250,prot:26,carb:0,fat:15,chol:90,fib:0,sod:60,src:'USDA #13365'},
-  {id:'egg',cat:'protein',name:'Boiled Egg',ur:'انڈہ ابلا',cal:78,prot:6,carb:0.6,fat:5,chol:186,fib:0,sod:62,src:'USDA #01129'},
-  {id:'dal',cat:'protein',name:'Lentils (cooked)',ur:'دال',cal:230,prot:18,carb:40,fat:0.8,chol:0,fib:15.6,sod:4,src:'USDA #16069'},
-  {id:'fish_fried',cat:'protein',name:'Fried Fish',ur:'مچھلی فرائی',cal:196,prot:22,carb:8,fat:9,chol:68,fib:0,sod:330,src:'USDA #15036'},
-  {id:'mutton',cat:'protein',name:'Mutton (cooked)',ur:'مٹن',cal:294,prot:25,carb:0,fat:21,chol:97,fib:0,sod:72,src:'USDA #17003'},
-  {id:'kebab',cat:'protein',name:'Seekh Kebab',ur:'کباب سیخ',cal:95,prot:10,carb:3,fat:5,chol:40,fib:0.5,sod:180,src:'Local Study'},
-  // Dairy
-  {id:'milk',cat:'dairy',name:'Full Fat Milk',ur:'دودھ',cal:149,prot:8,carb:12,fat:8,chol:24,fib:0,sod:105,src:'USDA #01077'},
-  {id:'yogurt',cat:'dairy',name:'Plain Yogurt',ur:'دہی',cal:149,prot:8.5,carb:11,fat:8,chol:32,fib:0,sod:113,src:'USDA #01116'},
-  {id:'lassi',cat:'dairy',name:'Sweet Lassi',ur:'لسی میٹھی',cal:180,prot:6,carb:28,fat:5,chol:15,fib:0,sod:95,src:'Local Study'},
-  // Pakistani Dishes
-  {id:'biryani',cat:'dishes',name:'Chicken Biryani',ur:'بریانی مرغ',cal:490,prot:22,carb:60,fat:18,chol:65,fib:2,sod:820,src:'Published Study'},
-  {id:'nihari',cat:'dishes',name:'Nihari',ur:'نہاری',cal:380,prot:28,carb:12,fat:24,chol:95,fib:1,sod:740,src:'Local Study'},
-  {id:'halwa_puri',cat:'dishes',name:'Halwa Puri',ur:'حلوہ پوری',cal:520,prot:8,carb:72,fat:22,chol:0,fib:3,sod:380,src:'Local Study'},
-  {id:'samosa',cat:'dishes',name:'Samosa',ur:'سموسہ',cal:130,prot:3,carb:15,fat:7,chol:5,fib:1,sod:210,src:'Local Study'},
-  {id:'shawarma',cat:'dishes',name:'Shawarma Roll',ur:'شوارما',cal:520,prot:28,carb:48,fat:22,chol:75,fib:2,sod:890,src:'Local Study'},
-  {id:'korma',cat:'dishes',name:'Chicken Korma',ur:'کورمہ',cal:310,prot:24,carb:8,fat:20,chol:82,fib:1,sod:520,src:'Local Study'},
-  {id:'haleem',cat:'dishes',name:'Haleem',ur:'حلیم',cal:280,prot:20,carb:22,fat:12,chol:45,fib:3,sod:480,src:'Published Study'},
-  {id:'paya',cat:'dishes',name:'Paya (Trotters)',ur:'پایا',cal:190,prot:18,carb:5,fat:11,chol:88,fib:0,sod:420,src:'Local Study'},
-  // Vegetables
-  {id:'spinach',cat:'vegetables',name:'Cooked Spinach',ur:'پالک',cal:41,prot:5.4,carb:6.7,fat:0.5,chol:0,fib:4.3,sod:126,src:'USDA #11458'},
-  {id:'potato',cat:'vegetables',name:'Boiled Potato',ur:'آلو ابلا',cal:130,prot:3,carb:30,fat:0.1,chol:0,fib:3,sod:10,src:'USDA #11352'},
-  {id:'aloo_curry',cat:'dishes',name:'Aloo Curry',ur:'آلو کا سالن',cal:160,prot:3,carb:22,fat:7,chol:0,fib:3.2,sod:380,src:'Local Study'},
-  // Fruits
-  {id:'banana',cat:'fruits',name:'Banana',ur:'کیلا',cal:89,prot:1.1,carb:23,fat:0.3,chol:0,fib:2.6,sod:1,src:'USDA #09040'},
-  {id:'apple',cat:'fruits',name:'Apple',ur:'سیب',cal:72,prot:0.4,carb:19,fat:0.2,chol:0,fib:3.3,sod:1,src:'USDA #09003'},
-  {id:'mango',cat:'fruits',name:'Mango',ur:'آم',cal:99,prot:1.4,carb:25,fat:0.6,chol:0,fib:2.6,sod:2,src:'USDA #09176'},
-  {id:'guava',cat:'fruits',name:'Guava',ur:'امرود',cal:68,prot:2.6,carb:14,fat:1,chol:0,fib:5.4,sod:2,src:'USDA #09112'},
-  {id:'watermelon',cat:'fruits',name:'Watermelon',ur:'تربوز',cal:46,prot:0.9,carb:11.5,fat:0.2,chol:0,fib:0.6,sod:2,src:'USDA #09326'},
-  {id:'orange',cat:'fruits',name:'Orange',ur:'مالٹا',cal:62,prot:1.2,carb:15,fat:0.2,chol:0,fib:3.1,sod:0,src:'USDA #09200'},
-  // Dry Fruits
-  {id:'almonds',cat:'dryfruits',name:'Almonds',ur:'بادام',cal:164,prot:6,carb:6,fat:14,chol:0,fib:3.5,sod:1,src:'USDA #12061'},
-  {id:'walnuts',cat:'dryfruits',name:'Walnuts',ur:'اخروٹ',cal:185,prot:4.3,carb:4,fat:18.5,chol:0,fib:1.9,sod:1,src:'USDA #12155'},
-  {id:'cashews',cat:'dryfruits',name:'Cashews',ur:'کاجو',cal:157,prot:5.2,carb:9,fat:12.4,chol:0,fib:0.9,sod:3,src:'USDA #12087'},
-  {id:'pistachios',cat:'dryfruits',name:'Pistachios',ur:'پستہ',cal:156,prot:5.8,carb:8,fat:12.5,chol:0,fib:3,sod:0,src:'USDA #12652'},
-  {id:'raisins',cat:'dryfruits',name:'Raisins',ur:'کشمش',cal:129,prot:1.4,carb:34,fat:0.2,chol:0,fib:1.6,sod:5,src:'USDA #09298'},
-  {id:'dates',cat:'dryfruits',name:'Dates (Khajoor)',ur:'کھجور',cal:277,prot:1.8,carb:75,fat:0.2,chol:0,fib:6.7,sod:1,src:'USDA #09087'},
-  {id:'figs_dry',cat:'dryfruits',name:'Dried Figs',ur:'انجیر خشک',cal:249,prot:3.3,carb:64,fat:1,chol:0,fib:9.8,sod:10,src:'USDA #09094'},
-  {id:'apricots_dry',cat:'dryfruits',name:'Dried Apricots',ur:'خوبانی خشک',cal:241,prot:3.4,carb:63,fat:0.5,chol:0,fib:7.3,sod:10,src:'USDA #09032'},
-  {id:'peanuts',cat:'dryfruits',name:'Peanuts',ur:'مونگ پھلی',cal:567,prot:26,carb:16,fat:49,chol:0,fib:8.5,sod:18,src:'USDA #16087'},
-  {id:'pinenuts',cat:'dryfruits',name:'Pine Nuts (Chilgoza)',ur:'چلغوزہ',cal:673,prot:14,carb:13,fat:68,chol:0,fib:3.7,sod:2,src:'USDA #12147'},
-  // Beverages
-  {id:'tea',cat:'beverages',name:'Milk Tea (Chai)',ur:'چائے دودھ',cal:60,prot:1.5,carb:10,fat:1.5,chol:5,fib:0,sod:25,src:'Local Study'},
-  {id:'water',cat:'beverages',name:'Water',ur:'پانی',cal:0,prot:0,carb:0,fat:0,chol:0,fib:0,sod:0,src:'USDA #14555'},
-  {id:'green_tea',cat:'beverages',name:'Green Tea',ur:'سبز چائے',cal:2,prot:0,carb:0,fat:0,chol:0,fib:0,sod:2,src:'USDA #14355'},
-  {id:'sugarcane',cat:'beverages',name:'Sugarcane Juice',ur:'گنے کا رس',cal:183,prot:0.4,carb:45,fat:0.3,chol:0,fib:0,sod:18,src:'Local Study'},
-  // Sweets
-  {id:'kheer',cat:'sweets',name:'Rice Pudding (Kheer)',ur:'کھیر',cal:200,prot:5,carb:35,fat:5,chol:18,fib:0.5,sod:80,src:'Local Study'},
-  {id:'halwa',cat:'sweets',name:'Gajar Halwa',ur:'گاجر حلوہ',cal:310,prot:5,carb:42,fat:13,chol:20,fib:3,sod:90,src:'Local Study'},
-  {id:'gulab_jamun',cat:'sweets',name:'Gulab Jamun',ur:'گلاب جامن',cal:175,prot:3,carb:28,fat:6,chol:15,fib:0.3,sod:95,src:'Local Study'},
+  // ── STAPLES (per piece/cup as noted) ─────────────────────────────
+  // Roti ~30g piece: USDA #18963
+  {id:'roti',      cat:'staples', name:'Roti (Chapati)',    ur:'روٹی',          unit:'1 piece (~30g)', cal:80,  prot:2.7, carb:16.0, fat:0.4, chol:0,   fib:1.2, sod:1,   src:'USDA #18963'},
+  // Cooked rice 1 cup 186g: USDA #20444
+  {id:'rice',      cat:'staples', name:'Cooked Rice',       ur:'چاول (پکے)',    unit:'1 cup (186g)',   cal:242, prot:5.0, carb:53.2, fat:0.4, chol:0,   fib:0.6, sod:0,   src:'USDA #20444'},
+  // Paratha ~70g: estimated from USDA wheat flour + oil
+  {id:'paratha',   cat:'staples', name:'Paratha',            ur:'پراٹھہ',        unit:'1 piece (~70g)', cal:200, prot:4.0, carb:24.5, fat:9.0, chol:0,   fib:1.5, sod:210, src:'USDA derived'},
+  // Naan ~90g: USDA #18261
+  {id:'naan',      cat:'staples', name:'Naan Bread',         ur:'نان',           unit:'1 piece (~90g)', cal:262, prot:8.7, carb:45.0, fat:5.1, chol:0,   fib:1.6, sod:536, src:'USDA #18261'},
+
+  // ── PROTEIN (per 100g cooked, or per piece) ───────────────────────
+  // Chicken grilled 100g: USDA #05064
+  {id:'chicken_gr',cat:'protein', name:'Chicken Grilled',   ur:'مرغ گرل',       unit:'100g',           cal:165, prot:31.0,carb:0.0,  fat:3.6, chol:85,  fib:0.0, sod:74,  src:'USDA #05064'},
+  // Beef cooked 100g: USDA #13365
+  {id:'beef',      cat:'protein', name:'Beef Cooked',        ur:'گوشت بیف',      unit:'100g',           cal:250, prot:26.0,carb:0.0,  fat:15.0,chol:90,  fib:0.0, sod:60,  src:'USDA #13365'},
+  // Mutton cooked 100g: USDA #17003
+  {id:'mutton',    cat:'protein', name:'Mutton (Cooked)',    ur:'مٹن',           unit:'100g',           cal:258, prot:25.6,carb:0.0,  fat:17.0,chol:97,  fib:0.0, sod:72,  src:'USDA #17003'},
+  // Boiled egg 1 large ~50g: USDA #01129
+  {id:'egg',       cat:'protein', name:'Boiled Egg',         ur:'انڈہ ابلا',     unit:'1 large (~50g)', cal:78,  prot:6.3, carb:0.6,  fat:5.3, chol:186, fib:0.0, sod:62,  src:'USDA #01129'},
+  // Lentils cooked 1 cup 198g: USDA #16069
+  {id:'dal',       cat:'protein', name:'Lentils Cooked',     ur:'دال',           unit:'1 cup (198g)',   cal:230, prot:17.9,carb:39.9, fat:0.8, chol:0,   fib:15.6,sod:4,   src:'USDA #16069'},
+  // Fried fish 100g: USDA #15036
+  {id:'fish_fried',cat:'protein', name:'Fried Fish',         ur:'مچھلی فرائی',  unit:'100g',           cal:196, prot:22.0,carb:8.0,  fat:9.0, chol:68,  fib:0.0, sod:330, src:'USDA #15036'},
+  // Seekh kebab 1 piece ~50g: local study
+  {id:'kebab',     cat:'protein', name:'Seekh Kebab',        ur:'کباب سیخ',      unit:'1 piece (~50g)', cal:95,  prot:10.0,carb:3.0,  fat:5.0, chol:40,  fib:0.5, sod:180, src:'Local Study'},
+
+  // ── DAIRY ─────────────────────────────────────────────────────────
+  // Full fat milk 1 cup 244ml: USDA #01077
+  {id:'milk',      cat:'dairy',   name:'Full Fat Milk',      ur:'دودھ',          unit:'1 cup (244ml)',  cal:149, prot:8.0, carb:11.7, fat:8.0, chol:24,  fib:0.0, sod:105, src:'USDA #01077'},
+  // Plain yogurt 1 cup 245g: USDA #01116
+  {id:'yogurt',    cat:'dairy',   name:'Plain Yogurt',       ur:'دہی',           unit:'1 cup (245g)',   cal:149, prot:8.5, carb:11.4, fat:8.0, chol:32,  fib:0.0, sod:113, src:'USDA #01116'},
+  // Sweet lassi 1 glass 300ml: local estimate
+  {id:'lassi',     cat:'dairy',   name:'Sweet Lassi',        ur:'لسی میٹھی',    unit:'1 glass (300ml)',cal:180, prot:6.0, carb:28.0, fat:5.0, chol:15,  fib:0.0, sod:95,  src:'Local Estimate'},
+
+  // ── PAKISTANI DISHES ──────────────────────────────────────────────
+  // Chicken Biryani 1 plate ~300g: published study
+  {id:'biryani',   cat:'dishes',  name:'Chicken Biryani',    ur:'بریانی مرغ',    unit:'1 plate (~300g)',cal:490, prot:22.0,carb:60.0, fat:18.0,chol:65,  fib:2.0, sod:820, src:'PMID Study'},
+  // Nihari 1 bowl ~250g: local study
+  {id:'nihari',    cat:'dishes',  name:'Nihari',             ur:'نہاری',         unit:'1 bowl (~250g)', cal:380, prot:28.0,carb:12.0, fat:24.0,chol:95,  fib:1.0, sod:740, src:'Local Study'},
+  // Halwa Puri 1 serving: local estimate
+  {id:'halwa_puri',cat:'dishes',  name:'Halwa Puri',         ur:'حلوہ پوری',     unit:'1 serving',      cal:520, prot:8.0, carb:72.0, fat:22.0,chol:0,   fib:3.0, sod:380, src:'Local Estimate'},
+  // Samosa 1 piece ~60g: local study
+  {id:'samosa',    cat:'dishes',  name:'Samosa',             ur:'سموسہ',         unit:'1 piece (~60g)', cal:130, prot:3.0, carb:15.0, fat:7.0, chol:5,   fib:1.0, sod:210, src:'Local Study'},
+  // Shawarma roll ~200g: local study
+  {id:'shawarma',  cat:'dishes',  name:'Shawarma Roll',      ur:'شوارما',        unit:'1 roll (~200g)', cal:520, prot:28.0,carb:48.0, fat:22.0,chol:75,  fib:2.0, sod:890, src:'Local Study'},
+  // Chicken Korma 1 cup: local study
+  {id:'korma',     cat:'dishes',  name:'Chicken Korma',      ur:'کورمہ',         unit:'1 cup',          cal:310, prot:24.0,carb:8.0,  fat:20.0,chol:82,  fib:1.0, sod:520, src:'Local Study'},
+  // Haleem 1 cup ~250g: PMID study
+  {id:'haleem',    cat:'dishes',  name:'Haleem',             ur:'حلیم',          unit:'1 cup (~250g)',  cal:280, prot:20.0,carb:22.0, fat:12.0,chol:45,  fib:3.0, sod:480, src:'PMID Study'},
+  // Paya 1 bowl: local study
+  {id:'paya',      cat:'dishes',  name:'Paya (Trotters)',    ur:'پایا',          unit:'1 bowl',         cal:190, prot:18.0,carb:5.0,  fat:11.0,chol:88,  fib:0.0, sod:420, src:'Local Study'},
+  // Aloo curry 1 cup
+  {id:'aloo_curry',cat:'dishes',  name:'Aloo Curry',         ur:'آلو کا سالن',   unit:'1 cup',          cal:160, prot:3.0, carb:22.0, fat:7.0, chol:0,   fib:3.2, sod:380, src:'Local Study'},
+
+  // ── VEGETABLES ────────────────────────────────────────────────────
+  // Spinach cooked 1 cup 180g: USDA #11458
+  {id:'spinach',   cat:'vegetables',name:'Cooked Spinach',  ur:'پالک',          unit:'1 cup (180g)',   cal:41,  prot:5.4, carb:6.8,  fat:0.5, chol:0,   fib:4.3, sod:126, src:'USDA #11458'},
+  // Boiled potato 1 medium 150g: USDA #11352
+  {id:'potato',    cat:'vegetables',name:'Boiled Potato',   ur:'آلو ابلا',      unit:'1 medium (150g)',cal:129, prot:3.0, carb:29.8, fat:0.2, chol:0,   fib:2.7, sod:10,  src:'USDA #11352'},
+
+  // ── FRUITS (per piece, actual serving) ───────────────────────────
+  // Banana 1 medium 118g: USDA #09040
+  {id:'banana',    cat:'fruits',  name:'Banana',             ur:'کیلا',          unit:'1 medium (118g)',cal:105, prot:1.3, carb:27.0, fat:0.4, chol:0,   fib:3.1, sod:1,   src:'USDA #09040'},
+  // Apple 1 medium 182g: USDA #09003
+  {id:'apple',     cat:'fruits',  name:'Apple',              ur:'سیب',           unit:'1 medium (182g)',cal:95,  prot:0.5, carb:25.1, fat:0.3, chol:0,   fib:4.4, sod:2,   src:'USDA #09003'},
+  // Mango 1 cup sliced 165g: USDA #09176
+  {id:'mango',     cat:'fruits',  name:'Mango',              ur:'آم',            unit:'1 cup (165g)',   cal:99,  prot:1.4, carb:24.7, fat:0.6, chol:0,   fib:2.6, sod:2,   src:'USDA #09176'},
+  // Guava 1 medium 55g: USDA #09112
+  {id:'guava',     cat:'fruits',  name:'Guava',              ur:'امرود',         unit:'1 medium (55g)', cal:37,  prot:1.4, carb:7.9,  fat:0.5, chol:0,   fib:3.0, sod:1,   src:'USDA #09112'},
+  // Watermelon 1 cup diced 152g: USDA #09326
+  {id:'watermelon',cat:'fruits',  name:'Watermelon',         ur:'تربوز',         unit:'1 cup (152g)',   cal:46,  prot:0.9, carb:11.5, fat:0.2, chol:0,   fib:0.6, sod:2,   src:'USDA #09326'},
+  // Orange 1 medium 131g: USDA #09200
+  {id:'orange',    cat:'fruits',  name:'Orange',             ur:'مالٹا',         unit:'1 medium (131g)',cal:62,  prot:1.2, carb:15.4, fat:0.2, chol:0,   fib:3.1, sod:0,   src:'USDA #09200'},
+  // Pomegranate 1/2 cup seeds 87g: USDA #09286
+  {id:'anar',      cat:'fruits',  name:'Pomegranate',        ur:'انار',          unit:'½ cup (87g)',    cal:72,  prot:1.0, carb:16.3, fat:1.0, chol:0,   fib:2.9, sod:3,   src:'USDA #09286'},
+  // Pear 1 medium 178g: USDA #09252
+  {id:'pear',      cat:'fruits',  name:'Pear',               ur:'ناشپاتی',       unit:'1 medium (178g)',cal:101, prot:0.6, carb:27.1, fat:0.2, chol:0,   fib:5.5, sod:2,   src:'USDA #09252'},
+
+  // ── DRY FRUITS (per 28g / 1oz standard serving = 1 handful) ──────
+  // Almonds 28g/1oz: USDA #12061
+  {id:'almonds',   cat:'dryfruits',name:'Almonds',           ur:'بادام',         unit:'28g (1 handful)',cal:164, prot:6.0, carb:6.1,  fat:14.0,chol:0,   fib:3.5, sod:1,   src:'USDA #12061'},
+  // Walnuts 28g/1oz: USDA #12155
+  {id:'walnuts',   cat:'dryfruits',name:'Walnuts',           ur:'اخروٹ',         unit:'28g (1 handful)',cal:185, prot:4.3, carb:3.9,  fat:18.5,chol:0,   fib:1.9, sod:1,   src:'USDA #12155'},
+  // Cashews 28g/1oz: USDA #12087
+  {id:'cashews',   cat:'dryfruits',name:'Cashews',           ur:'کاجو',          unit:'28g (1 handful)',cal:157, prot:5.2, carb:8.6,  fat:12.4,chol:0,   fib:0.9, sod:3,   src:'USDA #12087'},
+  // Pistachios 28g/1oz: USDA #12652
+  {id:'pistachios',cat:'dryfruits',name:'Pistachios',        ur:'پستہ',          unit:'28g (1 handful)',cal:156, prot:5.8, carb:7.7,  fat:12.5,chol:0,   fib:3.0, sod:0,   src:'USDA #12652'},
+  // Raisins 28g/small box: USDA #09298
+  {id:'raisins',   cat:'dryfruits',name:'Raisins',           ur:'کشمش',          unit:'28g (small box)',cal:85,  prot:0.9, carb:22.5, fat:0.1, chol:0,   fib:1.1, sod:3,   src:'USDA #09298'},
+  // DATES — 1 piece (Deglet Noor) ~8g: USDA #09087 ← FIXED (was 277/100g)
+  {id:'dates',     cat:'dryfruits',name:'Date (Khajoor)',    ur:'کھجور',         unit:'1 piece (~8g)',  cal:23,  prot:0.2, carb:6.2,  fat:0.0, chol:0,   fib:0.6, sod:0,   src:'USDA #09087'},
+  // Dried figs 1 piece ~10g: USDA #09094 ← FIXED (was 249/100g)
+  {id:'figs_dry',  cat:'dryfruits',name:'Dried Figs',        ur:'انجیر خشک',     unit:'1 piece (~10g)', cal:21,  prot:0.3, carb:5.4,  fat:0.1, chol:0,   fib:0.8, sod:2,   src:'USDA #09094'},
+  // Dried apricots 1 piece ~9g: USDA #09032 ← FIXED
+  {id:'apricots',  cat:'dryfruits',name:'Dried Apricots',    ur:'خوبانی خشک',    unit:'1 piece (~9g)',  cal:17,  prot:0.2, carb:4.4,  fat:0.0, chol:0,   fib:0.7, sod:1,   src:'USDA #09032'},
+  // Peanuts 28g/1oz: USDA #16087 ← FIXED (was 567/100g)
+  {id:'peanuts',   cat:'dryfruits',name:'Peanuts',           ur:'مونگ پھلی',     unit:'28g (1 handful)',cal:161, prot:7.3, carb:4.6,  fat:14.1,chol:0,   fib:2.4, sod:5,   src:'USDA #16087'},
+  // Pine nuts 28g/1oz: USDA #12147 ← FIXED (was 673/100g)
+  {id:'pinenuts',  cat:'dryfruits',name:'Pine Nuts (Chilgoza)',ur:'چلغوزہ',      unit:'28g (1 handful)',cal:191, prot:3.9, carb:3.7,  fat:19.4,chol:0,   fib:1.0, sod:1,   src:'USDA #12147'},
+  // Sesame seeds 1 tbsp 9g: USDA #12023
+  {id:'sesame',    cat:'dryfruits',name:'Sesame Seeds',       ur:'تل',            unit:'1 tbsp (9g)',    cal:52,  prot:1.6, carb:2.1,  fat:4.5, chol:0,   fib:1.1, sod:1,   src:'USDA #12023'},
+
+  // ── BEVERAGES ─────────────────────────────────────────────────────
+  // Milk tea 1 cup 240ml: local estimate
+  {id:'tea',       cat:'beverages',name:'Milk Tea (Chai)',   ur:'چائے دودھ',     unit:'1 cup (240ml)',  cal:55,  prot:1.4, carb:8.5,  fat:1.5, chol:5,   fib:0.0, sod:20,  src:'Local Estimate'},
+  // Water
+  {id:'water',     cat:'beverages',name:'Water',             ur:'پانی',           unit:'1 glass (250ml)',cal:0,   prot:0.0, carb:0.0,  fat:0.0, chol:0,   fib:0.0, sod:0,   src:'USDA #14555'},
+  // Green tea 1 cup: USDA #14355
+  {id:'green_tea', cat:'beverages',name:'Green Tea',         ur:'سبز چائے',      unit:'1 cup (240ml)',  cal:2,   prot:0.0, carb:0.0,  fat:0.0, chol:0,   fib:0.0, sod:2,   src:'USDA #14355'},
+  // Sugarcane juice 1 glass: local estimate
+  {id:'sugarcane', cat:'beverages',name:'Sugarcane Juice',   ur:'گنے کا رس',     unit:'1 glass (250ml)',cal:115, prot:0.3, carb:28.0, fat:0.1, chol:0,   fib:0.0, sod:17,  src:'Local Estimate'},
+
+  // ── SWEETS ────────────────────────────────────────────────────────
+  // Kheer 1 cup: local study
+  {id:'kheer',     cat:'sweets',   name:'Rice Pudding (Kheer)',ur:'کھیر',        unit:'1 cup',          cal:200, prot:5.0, carb:35.0, fat:5.0, chol:18,  fib:0.5, sod:80,  src:'Local Study'},
+  // Gajar halwa 1 cup: local study
+  {id:'halwa',     cat:'sweets',   name:'Gajar Halwa',        ur:'گاجر حلوہ',    unit:'1 cup',          cal:310, prot:5.0, carb:42.0, fat:13.0,chol:20,  fib:3.0, sod:90,  src:'Local Study'},
+  // Gulab jamun 1 piece ~50g: local study
+  {id:'gulab',     cat:'sweets',   name:'Gulab Jamun',        ur:'گلاب جامن',    unit:'1 piece (~50g)', cal:150, prot:2.5, carb:25.0, fat:5.0, chol:12,  fib:0.3, sod:80,  src:'Local Study'},
 ];
 
 const CATS = {
@@ -1186,7 +1232,7 @@ function showLocalFoods(foods){
     const name=lang==='ur'&&food.ur?food.ur:food.name;
     const sub=lang==='ur'?food.name:food.ur;
     const item=document.createElement('div'); item.className='fli';
-    item.innerHTML=`<div style="flex:1" onclick="openQtyModal(${JSON.stringify(food).replace(/"/g,'&quot;')})"><div class="fln">${name}</div><div class="fli-sub">${sub?sub+' · ':''}P:${food.prot}g C:${food.carb}g F:${food.fat}g<br><span class="src-tag">📡 ${food.src||'Local'}</span></div></div><div class="flcal">${food.cal} cal</div>`;
+    item.innerHTML=`<div style="flex:1" onclick="openQtyModal(${JSON.stringify(food).replace(/"/g,'&quot;')})"><div class="fln">${name}</div><div class="fli-sub"><span style="color:var(--a1);font-weight:600">📦 ${food.unit||'serving'}</span> · P:${food.prot}g C:${food.carb}g F:${food.fat}g<br><span class="src-tag">📡 ${food.src||'Local'}</span></div></div><div style="text-align:right"><div class="flcal">${food.cal}</div><div style="font-size:8px;color:var(--t2)">cal</div></div>`;
     // clicking the row opens QtyModal
     item.querySelector('[onclick]').style.cursor='pointer';
     c.appendChild(item);
@@ -1199,7 +1245,7 @@ function openQtyModal(food){
   if(typeof food === 'string') food = JSON.parse(food);
   S.food=food; S.qty=1;
   document.getElementById('qName').textContent=lang==='ur'&&food.ur?food.ur:food.name;
-  document.getElementById('qUnit').textContent='Per: '+(food.unit||'1 serving (avg)');
+  document.getElementById('qUnit').textContent='📦 Per Serving: '+(food.unit||'1 serving');
   document.getElementById('qSrc').textContent='📡 Source: '+(food.src||'Local Database');
   updateQtyPreview();
   document.getElementById('qtyModal').classList.add('open');
